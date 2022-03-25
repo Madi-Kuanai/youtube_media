@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:youtube_media/ApiServer/Downloader.dart';
+import 'package:youtube_media/backend/Downloader.dart';
 
-import '../../../ApiServer/VideoModel.dart';
+import '../../../backend/models/VideoModel.dart';
 import '../../../Consts.dart';
 
 class GetCard extends StatefulWidget {

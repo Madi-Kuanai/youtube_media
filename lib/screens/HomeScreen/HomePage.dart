@@ -30,6 +30,7 @@ class HomeState extends State<HomePage> {
       _height = size.height;
     });
     return Scaffold(
+
       appBar: MyAppBar(),
       body: _index == 0
           ? Body()
@@ -37,6 +38,7 @@ class HomeState extends State<HomePage> {
               color: const Color(0xff141213),
             ),
       bottomNavigationBar: GNavi(MediaQuery.of(context).size),
+      resizeToAvoidBottomInset: false,
     );
   }
 

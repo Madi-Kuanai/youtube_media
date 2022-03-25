@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-
-import 'package:youtube_media/ApiServer/SearchVideo.dart';
 import 'package:youtube_media/screens/HomeScreen/Components/Scrolls.dart';
-
 import '../../../Consts.dart';
+import 'package:youtube_media/backend/models/VideoModel.dart';
+
+import '../../../backend/SearchVideo.dart';
+
 
 class Body extends StatefulWidget {
   @override

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:youtube_api/youtube_api.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-import 'package:youtube_media/ApiServer/VideoModel.dart';
 import 'package:youtube_media/Consts.dart';
+import 'package:youtube_media/backend/models/VideoModel.dart';
 
 class SearchApi {
   static var yt = YoutubeAPI(Consts.Api_key);
@@ -24,17 +24,13 @@ class SearchApi {
       _description = element.description.toString();
       _imageLink = element.thumbnail.medium.url;
       _channelImgLink =
-          (await channel.channels.get(element.channelId)) as String;
-      _time =
-          Duration(hours: 0, minutes: 0, seconds: int.parse(element.duration!))
-              .toString()
-              .split(".")
-              .first.toString();
+          (await channel.channels.get(element.channelId)).toString();
+      _time = element.duration.toString();
       _title = element.title;
       _videoLink = element.url;
       _channelName = element.channelTitle;
       _musicLink = "https://vk.com/";
-      print("Title: $_videoLink");
+      print("Title: $_title");
       result.add(VideoModel(
           _channelImgLink,
           _imageLink,

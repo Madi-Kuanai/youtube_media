@@ -1,8 +1,5 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-import 'package:youtube_media/ApiServer/VideoModel.dart';
+import 'package:youtube_media/backend/models/VideoModel.dart';
 
 class GetInfo {
   var _id;
