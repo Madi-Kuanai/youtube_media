@@ -66,29 +66,31 @@ class _SearchPageState extends State<SearchPage> {
                   color: const Color(0x0fffffff).withOpacity(0.2))
             ]),
         child: RawKeyboardListener(
-            focusNode: FocusNode(),
-            child: TextField(
-              controller: textField,
-              textAlignVertical: TextAlignVertical.center,
-              decoration: InputDecoration(
-                  hintText: ("Search in YouTube"),
-                  hintStyle: const TextStyle(color: Colors.black45),
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  suffixIcon: IconButton(
-                    icon: const Icon(
-                      Icons.search,
-                      color: Colors.black54,
-                    ),
-                    onPressed: () {
-                      onSearch(textField, width, height);
-                    },
-                  )),
-            ), onKey: (event){
-              if (event.isKeyPressed(LogicalKeyboardKey.enter)){
-                onSearch(textField, width, height);
-              }
-        },),
+          focusNode: FocusNode(),
+          child: TextField(
+            controller: textField,
+            textAlignVertical: TextAlignVertical.center,
+            decoration: InputDecoration(
+                hintText: ("Search in YouTube"),
+                hintStyle: const TextStyle(color: Colors.black45),
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                suffixIcon: IconButton(
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.black54,
+                  ),
+                  onPressed: () {
+                    onSearch(textField, width, height);
+                  },
+                )),
+          ),
+          onKey: (event) {
+            if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
+              onSearch(textField, width, height);
+            }
+          },
+        ),
       ),
     );
   }
@@ -97,14 +99,15 @@ class _SearchPageState extends State<SearchPage> {
     print("OnSearch");
     if (textField.text.isEmpty) return;
     setState(() {
-      body =Container(
+      body = Container(
         alignment: Alignment.center,
         width: width,
         height: height,
         color: const Color(
           0xff222222,
         ),
-        child: Lottie.asset("${Consts.lottiePath}loading_animation.json", width: width * 0.3, height: height * 0.2),
+        child: Lottie.asset("${Consts.lottiePath}loading_animation.json",
+            width: width * 0.3, height: height * 0.2),
       );
     });
     List<VideoModel> searchList = [];

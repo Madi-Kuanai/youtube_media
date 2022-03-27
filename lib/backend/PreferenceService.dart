@@ -12,10 +12,14 @@ class FavouritesPreference {
   }
 
   static deleteFavourite(String key) async {
-    if (_pref!.containsKey(key))  await _pref!.remove(key);
+    if (_pref!.containsKey(key)) await _pref!.remove(key);
   }
 
   static addFavourite(String key) async {
     await _pref!.setBool(key, true);
+  }
+
+  static getFavourites() {
+    return _pref!.getKeys();
   }
 }

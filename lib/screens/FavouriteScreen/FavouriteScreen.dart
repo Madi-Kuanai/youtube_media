@@ -1,47 +1,46 @@
-/*
-* {Madi Kuanai}
-*/
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:youtube_media/components/Scrolls.dart';
-import '../../../Consts.dart';
+import 'package:youtube_media/backend/PreferenceService.dart';
+import 'package:youtube_media/backend/VideoInfo.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 
-import '../../../backend/SearchVideo.dart';
+import '../../Consts.dart';
+import '../../components/Scrolls.dart';
 
-class Body extends StatefulWidget {
+class FavouritePage extends StatefulWidget {
+  const FavouritePage({Key? key}) : super(key: key);
+
   @override
-  State<StatefulWidget> createState() => BodyState();
+  State<FavouritePage> createState() => _FavouritePageState();
 }
 
-class BodyState extends State<Body> {
-  var ytList;
-  bool isDownload = false;
+class _FavouritePageState extends State<FavouritePage> {
+  List<VideoModel>? ytList;
 
   @override
   void initState() {
-    initVideos();
     super.initState();
+    getVideoModels();
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    var _width = size.width;
-    var _height = size.height;
+    var _width = MediaQuery.of(context).size.width;
+    var _height = MediaQuery.of(context).size.height;
+
     return ytList != null
         ? SizedBox(
             width: _width,
             height: _height,
             child: ListView.separated(
                 itemBuilder: (BuildContext context, int index) =>
-                    GetCard(_width, _height, ytList[index]),
+                    GetCard(_width, _height, ytList![index]),
                 separatorBuilder: (BuildContext context, int index) =>
                     const Divider(
                       height: 1,
                       color: Color(0xff141213),
                     ),
-                itemCount: ytList.length))
+                itemCount: ytList!.length))
         : Container(
             alignment: Alignment.center,
             width: _width,
@@ -54,13 +53,16 @@ class BodyState extends State<Body> {
           );
   }
 
-  void initVideos() async {
-    await SearchApi().getTrends("RU").then((video) {
-      if (mounted) {
-        setState(() {
-          ytList = video;
-        });
-      }
+  void getVideoModels() async {
+    List<VideoModel>? lst = [];
+    for (String key in FavouritesPreference.getFavourites()) {
+      print(key);
+      await GetYouTubeInfo.getData(key).then((value) => {
+            lst.add(value)
+          });
+    }
+    setState(() {
+      ytList = lst;
     });
   }
 }

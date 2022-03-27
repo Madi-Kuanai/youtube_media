@@ -4,40 +4,55 @@
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 
-class GetInfo {
-  var _id;
+import 'PreferenceService.dart';
 
-  GetInfo({required id}) {
-    _id = id;
-  }
+class GetYouTubeInfo {
+  static var yt;
+  static var video;
+  static var channel;
+  static var _imageLink;
+  static var _time;
+  static var _title;
+  static var _videoLink;
+  static var _musicLink;
+  static var _channelImgLink;
+  static String? _channelName;
+  static String? _description;
+  static var _idVideo;
+  static var _isFavourite;
 
-  Future<VideoModel> getData() async {
-    var yt = YoutubeExplode();
-    var video = await yt.videos.get(_id);
-    var channel = await yt.channels.getByVideo(_id);
-    var _imageLink = video.thumbnails.standardResUrl;
-    var _time =
-        Duration(hours: 0, minutes: 0, seconds: video.duration!.inSeconds)
-            .toString();
-    var _title = video.title;
-    var _videoLink = video.url;
-    var _musicLink = "https://vk.com/";
-    var _channelImgLink = channel.logoUrl;
-    String _channelName = channel.title;
-    String _description = video.description.toString();
-    var _idVideo = video.id.toString();
+  static Future<VideoModel> getData(_id) async {
+    yt = YoutubeExplode();
+    video = await yt.videos.get(_id);
+    channel = await yt.channels.getByVideo(_id);
+    _imageLink = video.thumbnails.standardResUrl;
+    _time = Duration(hours: 0, minutes: 0, seconds: video.duration!.inSeconds)
+        .toString().split(".")[0].toString();
+    _title = video.title;
+    _videoLink = video.url;
+    _musicLink = "https://vk.com/";
+    _channelImgLink = channel.logoUrl;
+    _channelName = channel.title;
+    _description = video.description.toString();
+    _idVideo = video.id.toString();
+    _isFavourite = FavouritesPreference.checkFavourite(_id);
     return VideoModel(
         _idVideo,
         _channelImgLink,
         _imageLink,
         _title.toString().length > 25
-            ? _title.toString().substring(0, 25) + "..."
+            ? _title.toString().substring(0, 22) + "..."
             : _title,
         _time,
         _videoLink,
         _musicLink,
-        _channelName,
-        _description,
-        false);
+        _channelName!,
+        _description!,
+        _isFavourite);
+  }
+
+  @override
+  String toString() {
+    return "Title: $_title \n Description: $_description \n id: $_idVideo Favourite: $_isFavourite";
   }
 }

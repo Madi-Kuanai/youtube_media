@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:youtube_media/screens/FavouriteScreen/FavouriteScreen.dart';
 import 'package:youtube_media/screens/SearchScreen/SearchPage.dart';
 import 'package:permissions_plugin/permissions_plugin.dart';
 import 'Components/Body.dart';
@@ -34,9 +35,7 @@ class HomeState extends State<HomePage> {
       appBar: MyAppBar(),
       body: _index == 0
           ? Body()
-          : Container(
-              color: const Color(0xff141213),
-            ),
+          : FavouritePage(),
       bottomNavigationBar: GNavi(MediaQuery.of(context).size),
       resizeToAvoidBottomInset: false,
     );
