@@ -1,9 +1,13 @@
+/*
+* {Madi Kuanai}
+*/
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:youtube_media/backend/Downloader.dart';
 
-import '../../../backend/models/VideoModel.dart';
-import '../../../Consts.dart';
+import '../backend/models/VideoModel.dart';
+import '../Consts.dart';
 
 class GetCard extends StatefulWidget {
   double width;
@@ -27,6 +31,7 @@ class _GetCardState extends State<GetCard> {
   var _musicLink;
   var _channelName;
   var video;
+  var _isFavourite;
 
   _GetCardState(this.width, this.height, this.video);
 
@@ -41,6 +46,7 @@ class _GetCardState extends State<GetCard> {
         _channelName = video.getChannelName;
         _videoLink = video.getVideoUrl;
         _channelImg = video.getChannelImgLink;
+        _isFavourite = video.isFavourite;
       });
     }
   }
@@ -96,8 +102,11 @@ class _GetCardState extends State<GetCard> {
               ],
             ),
             Container(
-              margin: EdgeInsets.only(left: width * 0.02, right: width * 0),
+              margin: EdgeInsets.only(
+                left: width * 0.02,
+              ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
                       margin: EdgeInsets.only(top: height * 0.02),
@@ -110,7 +119,7 @@ class _GetCardState extends State<GetCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                          width: width * 0.7,
+                          width: width * 0.65,
                           padding: EdgeInsets.only(right: width * 0.05),
                           margin: EdgeInsets.only(
                               left: width * 0.03, top: height * 0.02),
@@ -135,26 +144,45 @@ class _GetCardState extends State<GetCard> {
                       )
                     ],
                   ),
+                  SizedBox(
+                      width: width * 0.05,
+                      height: height * 0.05,
+                      child: GestureDetector(
+                        child: _isFavourite
+                            ? const Icon(Icons.bookmark)
+                            : const Icon(Icons.bookmark_border),
+                        //_isFavourite ? CustomCheckBox(_isFavourite) : CustomCheckBox(_isFavourite),
+                        onTap: () {
+                          setState(() {
+                            addDeleteFavourite();
+                            _isFavourite = !_isFavourite;
+                          });
+                          print("TAP");
+                        },
+                      )),
+
                   /* Create option menu */
-                  PopupMenuButton(
-                      icon: Icon(Icons.adaptive.more,
-                          color: Colors.white, size: 20),
-                      color: const Color(0xff211F1D),
-                      itemBuilder: (context) => [
-                            const PopupMenuItem(
-                              child: Text(
-                                "Music Download",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              value: 1,
-                            ),
-                            PopupMenuItem(
-                              child: const Text("Video Download",
-                                  style: TextStyle(color: Colors.white)),
-                              onTap: () => {downloadVideo()},
-                              value: 2,
-                            )
-                          ])
+                  Container(
+                      margin: EdgeInsets.only(left: width * 0.02),
+                      child: PopupMenuButton(
+                          icon: Icon(Icons.adaptive.more,
+                              color: Colors.white, size: 20),
+                          color: const Color(0xff211F1D),
+                          itemBuilder: (context) => [
+                                const PopupMenuItem(
+                                  child: Text(
+                                    "Music Download",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  value: 1,
+                                ),
+                                PopupMenuItem(
+                                  child: const Text("Video Download",
+                                      style: TextStyle(color: Colors.white)),
+                                  onTap: () => {downloadVideo()},
+                                  value: 2,
+                                )
+                              ]))
                 ],
               ),
             )
@@ -177,5 +205,8 @@ class _GetCardState extends State<GetCard> {
           fontSize: 16.0);
     }
   }
+
+  void addDeleteFavourite() async {
+    !_isFavourite ? await video.addFavourite() : await video.deleteFavourite();
+  }
 }
-// }

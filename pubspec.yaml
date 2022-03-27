@@ -43,7 +43,7 @@ dependencies:
   flutter_youtube_downloader:
   permissions_plugin: ^1.1.4
   fluttertoast: ^8.0.9
-
+  shared_preferences: ^0.5.12+4
 
   #permission_handler: ^6.1.1
 

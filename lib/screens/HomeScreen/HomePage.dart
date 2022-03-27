@@ -45,10 +45,6 @@ class HomeState extends State<HomePage> {
   Container GNavi(Size size) {
     return Container(
         height: size.height * 0.08,
-        // margin: const EdgeInsets.only(
-        //   left: 20,
-        //   right: 20,
-        // ),
         decoration: const BoxDecoration(
           color: Colors.black87,
           //    borderRadius: BorderRadius.circular(20)

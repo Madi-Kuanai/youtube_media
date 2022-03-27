@@ -1,6 +1,9 @@
+/*
+* {Madi Kuanai}
+*/
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:youtube_media/screens/HomeScreen/Components/Scrolls.dart';
+import 'package:youtube_media/components/Scrolls.dart';
 import '../../../Consts.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 

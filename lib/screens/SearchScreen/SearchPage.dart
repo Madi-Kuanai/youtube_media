@@ -5,7 +5,7 @@ import 'package:youtube_media/Consts.dart';
 import 'package:youtube_media/backend/SearchVideo.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 
-import '../HomeScreen/Components/Scrolls.dart';
+import '../../components/Scrolls.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);

@@ -1,9 +1,12 @@
-import 'dart:convert';
-
+/*
+* {Madi Kuanai}
+*/
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youtube_api/youtube_api.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:youtube_media/Consts.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
+import 'package:youtube_media/backend/PreferenceService.dart';
 
 class SearchApi {
   static var yt = YoutubeAPI(Consts.Api_key);
@@ -13,73 +16,66 @@ class SearchApi {
     List<YouTubeVideo> tempResult = await yt.search(query);
     List<VideoModel> result = [];
     for (YouTubeVideo element in tempResult) {
-      var _imageLink;
-      String _time;
-      String _title;
-      String _videoLink;
-      String _musicLink;
-      String _channelImgLink;
-      String _channelName;
-      String _description;
-      _description = element.description.toString();
-      _imageLink = element.thumbnail.medium.url;
-      _channelImgLink =
+      var _id = element.id.toString();
+      var _description = element.description.toString();
+      var _imageLink = element.thumbnail.medium.url;
+      var _channelImgLink =
           (await channel.channels.get(element.channelId)).toString();
-      _time = element.duration.toString();
-      _title = element.title;
-      _videoLink = element.url;
-      _channelName = element.channelTitle;
-      _musicLink = "https://vk.com/";
-      print("Title: $_title");
+      var _time = element.duration.toString();
+      var _title = element.title;
+      var _videoLink = element.url;
+      var _channelName = element.channelTitle;
+      var _musicLink = "https://vk.com/";
+      var _isFavourite = FavouritesPreference.checkFavourite(_id);
       result.add(VideoModel(
+          _id,
           _channelImgLink,
-          _imageLink,
+          _imageLink!,
           _title.toString().length > 25
-              ? _title.toString().substring(0, 27) + "..."
+              ? _title.toString().substring(0, 25) + "..."
               : _title,
           _time,
           _videoLink,
           _musicLink,
           _channelName,
-          _description));
+          _description,
+          _isFavourite));
     }
     return result;
   }
-
+ /* Func for get YouTube trends for local */
   Future<List<VideoModel>> getTrends(String local) async {
     List<VideoModel> result = [];
     List<YouTubeVideo> tempResult = await yt.getTrends(
       regionCode: local,
     );
     for (YouTubeVideo element in tempResult) {
-      var _imageLink;
-      String? _time;
-      String _title;
-      String _videoLink;
-      String _musicLink;
-      var _channelImgLink;
-      String _channelName;
-      String _description;
-      _description = element.description.toString();
-      _imageLink = element.thumbnail.medium.url;
-      _channelImgLink =
+      var _id = element.id.toString();
+      var _description = element.description.toString();
+      var _imageLink = element.thumbnail.medium.url;
+      var _channelImgLink =
           (await channel.channels.get(element.channelId)).logoUrl.toString();
-      _time = element.duration.toString();
-      _title = element.title;
-      _videoLink = element.url;
-      _channelName = element.channelTitle;
-      _musicLink = "https://vk.com/";
+      var _time = element.duration.toString();
+      var _title = element.title;
+      var _videoLink = element.url;
+      var _channelName = element.channelTitle;
+      var _musicLink = "https://vk.com/";
+      var _isFavourite = FavouritesPreference.checkFavourite(_id);
+
       result.add(VideoModel(
+          _id,
           _channelImgLink,
-          _imageLink,
+          _imageLink!,
           _title.toString().length > 25
-              ? _title.toString().substring(0, 25) + "..."
+              ? _title.toString().substring(0, 22) + "..."
               : _title,
           _time.toString(),
           _videoLink,
           _musicLink,
           _channelName,
-          _description));}
+          _description,
+          _isFavourite));
+    }
 
     return result;
   }

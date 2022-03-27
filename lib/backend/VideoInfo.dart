@@ -1,3 +1,6 @@
+/*
+* {Madi Kuanai}
+*/
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 
@@ -22,7 +25,9 @@ class GetInfo {
     var _channelImgLink = channel.logoUrl;
     String _channelName = channel.title;
     String _description = video.description.toString();
+    var _idVideo = video.id.toString();
     return VideoModel(
+        _idVideo,
         _channelImgLink,
         _imageLink,
         _title.toString().length > 25
@@ -32,6 +37,7 @@ class GetInfo {
         _videoLink,
         _musicLink,
         _channelName,
-        _description);
+        _description,
+        false);
   }
 }
