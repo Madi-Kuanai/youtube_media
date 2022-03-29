@@ -9,18 +9,20 @@ import 'package:youtube_media/backend/models/VideoModel.dart';
 import 'package:youtube_media/backend/PreferenceService.dart';
 
 class SearchApi {
-  static var yt = YoutubeAPI(Consts.Api_key);
-  var channel = YoutubeExplode();
+  static var yt = YoutubeAPI(Consts.Api_key, maxResults: 20, type: "video");
+  var ytExplode = YoutubeExplode();
+
 
   Future<List<VideoModel>> getSearchResultList(String query) async {
-    List<YouTubeVideo> tempResult = await yt.search(query);
+    List<YouTubeVideo> tempResult = await yt.search(query, type: "video");
+
     List<VideoModel> result = [];
     for (YouTubeVideo element in tempResult) {
       var _id = element.id.toString();
       var _description = element.description.toString();
       var _imageLink = element.thumbnail.medium.url;
       var _channelImgLink =
-          (await channel.channels.get(element.channelId)).toString();
+      (await ytExplode.channels.get(element.channelId)).toString();
       var _time = element.duration.toString();
       var _title = element.title;
       var _videoLink = element.url;
@@ -31,8 +33,10 @@ class SearchApi {
           _id,
           _channelImgLink,
           _imageLink!,
-          _title.toString().length > 25
-              ? _title.toString().substring(0, 25) + "..."
+          _title
+              .toString()
+              .length > 23
+              ? _title.toString().substring(0, 23) + "..."
               : _title,
           _time,
           _videoLink,
@@ -43,7 +47,8 @@ class SearchApi {
     }
     return result;
   }
- /* Func for get YouTube trends for local */
+
+  /* Func for get YouTube trends for local */
   Future<List<VideoModel>> getTrends(String local) async {
     List<VideoModel> result = [];
     List<YouTubeVideo> tempResult = await yt.getTrends(
@@ -54,7 +59,7 @@ class SearchApi {
       var _description = element.description.toString();
       var _imageLink = element.thumbnail.medium.url;
       var _channelImgLink =
-          (await channel.channels.get(element.channelId)).logoUrl.toString();
+      (await ytExplode.channels.get(element.channelId)).logoUrl.toString();
       var _time = element.duration.toString();
       var _title = element.title;
       var _videoLink = element.url;
@@ -66,7 +71,9 @@ class SearchApi {
           _id,
           _channelImgLink,
           _imageLink!,
-          _title.toString().length > 25
+          _title
+              .toString()
+              .length > 25
               ? _title.toString().substring(0, 22) + "..."
               : _title,
           _time.toString(),

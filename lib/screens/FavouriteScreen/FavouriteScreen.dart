@@ -32,15 +32,17 @@ class _FavouritePageState extends State<FavouritePage> {
         ? SizedBox(
             width: _width,
             height: _height,
-            child: ListView.separated(
-                itemBuilder: (BuildContext context, int index) =>
-                    GetCard(_width, _height, ytList![index]),
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(
-                      height: 1,
-                      color: Color(0xff141213),
-                    ),
-                itemCount: ytList!.length))
+            child: RefreshIndicator(
+                onRefresh: getVideoModels,
+                child: ListView.separated(
+                    itemBuilder: (BuildContext context, int index) =>
+                        GetCard(_width, _height, ytList![index]),
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(
+                          height: 1,
+                          color: Color(0xff141213),
+                        ),
+                    itemCount: ytList!.length)))
         : Container(
             alignment: Alignment.center,
             width: _width,
@@ -53,13 +55,11 @@ class _FavouritePageState extends State<FavouritePage> {
           );
   }
 
-  void getVideoModels() async {
+  Future<Null> getVideoModels() async {
     List<VideoModel>? lst = [];
     for (String key in FavouritesPreference.getFavourites()) {
       print(key);
-      await GetYouTubeInfo.getData(key).then((value) => {
-            lst.add(value)
-          });
+      await GetYouTubeInfo.getData(key).then((value) => {lst.add(value)});
     }
     setState(() {
       ytList = lst;

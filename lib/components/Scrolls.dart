@@ -21,6 +21,7 @@ class GetCard extends StatefulWidget {
 }
 
 class _GetCardState extends State<GetCard> {
+  var _id;
   var width;
   var height;
   var _ImageLink;
@@ -35,10 +36,11 @@ class _GetCardState extends State<GetCard> {
 
   _GetCardState(this.width, this.height, this.video);
 
-  void getInfo() {
+  getInfo() {
     if (mounted) {
       setState(() {
         /* We take the information from the model sent to us */
+        _id = video.getId;
         _ImageLink = video.getImageUrl;
         _musicLink = video.getMusicUrl;
         _title = video.getTitle;
@@ -149,8 +151,12 @@ class _GetCardState extends State<GetCard> {
                       height: height * 0.05,
                       child: GestureDetector(
                         child: _isFavourite
-                            ? const Icon(Icons.bookmark)
-                            : const Icon(Icons.bookmark_border),
+                            ? const Icon(
+                                Icons.bookmark,
+                                color: Colors.white10,
+                              )
+                            : const Icon(Icons.bookmark_border,
+                                color: Colors.white10),
                         //_isFavourite ? CustomCheckBox(_isFavourite) : CustomCheckBox(_isFavourite),
                         onTap: () {
                           setState(() {
@@ -169,11 +175,12 @@ class _GetCardState extends State<GetCard> {
                               color: Colors.white, size: 20),
                           color: const Color(0xff211F1D),
                           itemBuilder: (context) => [
-                                const PopupMenuItem(
-                                  child: Text(
+                                PopupMenuItem(
+                                  child: const Text(
                                     "Music Download",
                                     style: TextStyle(color: Colors.white),
                                   ),
+                                  onTap: () => {downloadMp3()},
                                   value: 1,
                                 ),
                                 PopupMenuItem(
@@ -208,5 +215,9 @@ class _GetCardState extends State<GetCard> {
 
   void addDeleteFavourite() async {
     !_isFavourite ? await video.addFavourite() : await video.deleteFavourite();
+  }
+
+  Future<dynamic> downloadMp3() async {
+    await Downloader.downloadMp3(_id).then((value) => null);
   }
 }

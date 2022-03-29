@@ -29,6 +29,8 @@ class VideoModel {
       this._isFavourite);
 
   /*-------------------------Getters------------------*/
+  String get getId => _id;
+
   String get getImageUrl => _imageUrl.toString();
 
   String get getTitle => _title;
@@ -46,8 +48,6 @@ class VideoModel {
   String get getChannelName => _channelName;
 
   String get getDescription => _description;
-
-  String get getId => _id;
 
   bool get isFavourite {
     /*-- Function to check whether a video is a favorite   --*/

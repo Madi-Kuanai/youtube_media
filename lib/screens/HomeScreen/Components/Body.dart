@@ -15,7 +15,7 @@ class Body extends StatefulWidget {
 }
 
 class BodyState extends State<Body> {
-  var ytList;
+  static var ytList;
   bool isDownload = false;
 
   @override
@@ -33,15 +33,20 @@ class BodyState extends State<Body> {
         ? SizedBox(
             width: _width,
             height: _height,
-            child: ListView.separated(
-                itemBuilder: (BuildContext context, int index) =>
-                    GetCard(_width, _height, ytList[index]),
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(
-                      height: 1,
-                      color: Color(0xff141213),
-                    ),
-                itemCount: ytList.length))
+            child: RefreshIndicator(
+                backgroundColor: Colors.black54,
+                color: Colors.white,
+                onRefresh: initVideos,
+                child: ListView.separated(
+                    itemBuilder: (BuildContext context, int index) =>
+                        GetCard(_width, _height, ytList[index]),
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(
+                          height: 1,
+                          color: Color(0xff141213),
+                        ),
+                    itemCount: ytList.length)),
+          )
         : Container(
             alignment: Alignment.center,
             width: _width,
@@ -54,7 +59,7 @@ class BodyState extends State<Body> {
           );
   }
 
-  void initVideos() async {
+  Future<Null> initVideos() async {
     await SearchApi().getTrends("RU").then((video) {
       if (mounted) {
         setState(() {
@@ -62,5 +67,6 @@ class BodyState extends State<Body> {
         });
       }
     });
+    print("InitVideo");
   }
 }
