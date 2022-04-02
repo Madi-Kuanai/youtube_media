@@ -39,7 +39,7 @@ class GetYouTubeInfo {
     _description = video.description.toString();
     print("time" + _time);
     _idVideo = video.id.toString();
-    _isFavourite = FavouritesPreference.checkFavourite(_id);
+    _isFavourite = PreferenceService.checkFavourite(_id);
     return VideoModel(
         _idVideo,
         _channelImgLink,

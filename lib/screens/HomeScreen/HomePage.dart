@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:youtube_media/screens/FavouriteScreen/FavouriteScreen.dart';
 import 'package:youtube_media/screens/SearchScreen/SearchPage.dart';
-import 'package:permissions_plugin/permissions_plugin.dart';
+import '../../backend/PreferenceService.dart';
 import 'Components/Body.dart';
+import 'package:country_list_pick/country_list_pick.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -34,11 +35,8 @@ class HomeState extends State<HomePage> {
       _height = size.height;
     });
     return Scaffold(
-
       appBar: MyAppBar(),
-      body: _index == 0
-          ? Body()
-          : FavouritePage(),
+      body: _index == 0 ? Body() : const FavouritePage(),
       bottomNavigationBar: GNavi(MediaQuery.of(context).size),
       resizeToAvoidBottomInset: false,
     );
@@ -49,7 +47,6 @@ class HomeState extends State<HomePage> {
         height: size.height * 0.08,
         decoration: const BoxDecoration(
           color: Colors.black87,
-          //    borderRadius: BorderRadius.circular(20)
         ),
         child: Flexible(
             child: GNav(
@@ -90,14 +87,36 @@ class HomeState extends State<HomePage> {
               "YTMedia",
               style: TextStyle(fontSize: 20),
             ),
-            // Container(
-            //   margin: EdgeInsets.only(left: _width * 0.15),
-            //   child: const Text("Trends", style: TextStyle(fontSize: 20),),
-            // )
           ],
         ),
         backgroundColor: Colors.black87,
         actions: [
+          CountryListPick(
+            pickerBuilder: ((
+              context,
+              countryCode,
+            ) =>
+                const Icon(
+                  Icons.place_outlined,
+                  color: Colors.white,
+                )),
+            useUiOverlay: true,
+            useSafeArea: false,
+            appBar: AppBar(
+              title: const Text(
+                "Select the country whose trend you want to see",
+                style: TextStyle(fontSize: 14),
+              ),
+            ),
+            theme: CountryTheme(
+              isShowFlag: true,
+              isShowTitle: true,
+              isDownIcon: true,
+              showEnglishName: true,
+            ),
+            onChanged: (countryCode) =>
+                {PreferenceService.setLastLocal(countryCode!.code.toString())},
+          ),
           Container(
             margin: EdgeInsets.only(right: _width * 0.05),
             child: IconButton(
@@ -113,7 +132,7 @@ class HomeState extends State<HomePage> {
                         builder: (BuildContext context) => const SearchPage()));
               },
             ),
-          )
+          ),
         ],
       );
 }

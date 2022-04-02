@@ -51,16 +51,16 @@ class VideoModel {
 
   bool get isFavourite {
     /*-- Function to check whether a video is a favorite   --*/
-    return FavouritesPreference.checkFavourite(_id);
+    return PreferenceService.checkFavourite(_id);
   }
 
   Future<void> addFavourite() async {
     /*-- Func to add this video to Favourites*/
-    await FavouritesPreference.addFavourite(_id);
+    await PreferenceService.addFavourite(_id);
   }
 
   void deleteFavourite() async {
     /*-- Func to delete this video to Favourites*/
-    await FavouritesPreference.deleteFavourite(_id);
+    await PreferenceService.deleteFavourite(_id);
   }
 }

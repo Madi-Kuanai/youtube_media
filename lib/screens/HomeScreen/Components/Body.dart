@@ -3,6 +3,7 @@
 */
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:youtube_media/backend/PreferenceService.dart';
 import 'package:youtube_media/components/Scrolls.dart';
 import '../../../Consts.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
@@ -60,6 +61,7 @@ class BodyState extends State<Body> {
   }
 
   Future<void> initVideos() async {
+
     await SearchApi().getTrends("RU").then((video) {
       if (mounted) {
         setState(() {
@@ -67,6 +69,5 @@ class BodyState extends State<Body> {
         });
       }
     });
-    print("InitVideo");
   }
 }

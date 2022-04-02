@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youtube_media/Consts.dart';
 
-class FavouritesPreference {
+class PreferenceService {
   static SharedPreferences? _pref;
 
   static Future init() async {
@@ -21,5 +22,14 @@ class FavouritesPreference {
 
   static getFavourites() {
     return _pref!.getKeys();
+  }
+
+  static getLastLocal() {
+    return _pref!.get(Consts.lastLocal);
+  }
+
+  static setLastLocal(String local) async {
+    await _pref!.setString(Consts.lastLocal, local);
+    print(local);
   }
 }

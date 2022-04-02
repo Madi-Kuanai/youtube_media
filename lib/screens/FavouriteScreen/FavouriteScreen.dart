@@ -34,6 +34,7 @@ class _FavouritePageState extends State<FavouritePage> {
     var _height = MediaQuery.of(context).size.height;
 
     return Container(
+      width: _width,
       height: _height,
       alignment: Alignment.topCenter,
       color: const Color(0xff141213),
@@ -42,6 +43,8 @@ class _FavouritePageState extends State<FavouritePage> {
               width: _width,
               height: _height,
               child: RefreshIndicator(
+                  backgroundColor: Colors.black54,
+                  color: Colors.white,
                   onRefresh: getVideoModels,
                   child: ListView.separated(
                       itemBuilder: (BuildContext context, int index) =>
@@ -104,7 +107,7 @@ class _FavouritePageState extends State<FavouritePage> {
 
   Future<Null> getVideoModels() async {
     List<VideoModel>? lst = [];
-    for (String key in FavouritesPreference.getFavourites()) {
+    for (String key in PreferenceService.getFavourites()) {
       print(key);
       await GetYouTubeInfo.getData(key).then((value) => {lst.add(value)});
     }
