@@ -7,7 +7,7 @@ import 'package:youtube_media/components/Scrolls.dart';
 import '../../../Consts.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 
-import '../../../backend/SearchVideo.dart';
+import '../../../backend/SearchThreadVideos.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -59,7 +59,7 @@ class BodyState extends State<Body> {
           );
   }
 
-  Future<Null> initVideos() async {
+  Future<void> initVideos() async {
     await SearchApi().getTrends("RU").then((video) {
       if (mounted) {
         setState(() {

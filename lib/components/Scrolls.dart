@@ -2,8 +2,6 @@
 * {Madi Kuanai}
 */
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:youtube_media/backend/Downloader.dart';
 
 import '../backend/models/VideoModel.dart';
@@ -202,14 +200,7 @@ class _GetCardState extends State<GetCard> {
             .then((value) => value.toString()) !=
         "Downloading...") {
       /* If download answer incorrect, we show message about it */
-      Fluttertoast.showToast(
-          msg: "Error",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black45,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      //TODO make notification about Error
     }
   }
 
@@ -217,7 +208,9 @@ class _GetCardState extends State<GetCard> {
     !_isFavourite ? await video.addFavourite() : await video.deleteFavourite();
   }
 
-  Future<dynamic> downloadMp3() async {
-    await Downloader.downloadMp3(_id).then((value) => null);
+  Future<void> downloadMp3() async {
+    await Downloader.downloadMp3(_id, _title).then((value) => {
+          if (value) {print("OKKK")} else {print("Errorl;")}
+        });
   }
 }

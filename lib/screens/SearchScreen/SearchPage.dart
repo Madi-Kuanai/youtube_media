@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:youtube_media/Consts.dart';
-import 'package:youtube_media/backend/SearchVideo.dart';
+import 'package:youtube_media/backend/SearchThreadVideos.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 
 import '../../components/Scrolls.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:youtube_media/backend/PreferenceService.dart';
-import 'package:youtube_media/backend/VideoInfo.dart';
+import 'package:youtube_media/backend/GetOneVideoInfo.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 
 import '../../Consts.dart';

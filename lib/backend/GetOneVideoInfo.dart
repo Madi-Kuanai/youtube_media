@@ -26,8 +26,11 @@ class GetYouTubeInfo {
     video = await yt.videos.get(_id);
     channel = await yt.channels.getByVideo(_id);
     _imageLink = video.thumbnails.standardResUrl;
-    _time = Duration(hours: 0, minutes: 0, seconds: video.duration!.inSeconds)
-        .toString().split(".")[0].toString();
+    _time = _getDuration(video.duration!.inSeconds
+        .toString()
+        .split(".")[0]
+        .toString()
+        .split(":"));
     _title = video.title;
     _videoLink = video.url;
     _musicLink = "https://vk.com/";
@@ -54,5 +57,18 @@ class GetYouTubeInfo {
   @override
   String toString() {
     return "Title: $_title \n Description: $_description \n id: $_idVideo Favourite: $_isFavourite";
+  }
+
+  static _getDuration(duration) {
+    //video.duration!.inSeconds
+    String res;
+    for (int i = 0; i >= duration.length; i++) {
+      if (i == 0) {
+        if (duration[i] == "0") {
+          continue;
+        }
+      }
+
+    }
   }
 }
