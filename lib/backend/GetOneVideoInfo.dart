@@ -26,7 +26,7 @@ class GetYouTubeInfo {
     video = await yt.videos.get(_id);
     channel = await yt.channels.getByVideo(_id);
     _imageLink = video.thumbnails.standardResUrl;
-    _time = _getDuration(video.duration!.inSeconds
+    _time = _getDuration(Duration(seconds: video.duration!.inSeconds)
         .toString()
         .split(".")[0]
         .toString()
@@ -37,6 +37,7 @@ class GetYouTubeInfo {
     _channelImgLink = channel.logoUrl;
     _channelName = channel.title;
     _description = video.description.toString();
+    print("time" + _time);
     _idVideo = video.id.toString();
     _isFavourite = FavouritesPreference.checkFavourite(_id);
     return VideoModel(
@@ -60,15 +61,8 @@ class GetYouTubeInfo {
   }
 
   static _getDuration(duration) {
-    //video.duration!.inSeconds
-    String res;
-    for (int i = 0; i >= duration.length; i++) {
-      if (i == 0) {
-        if (duration[i] == "0") {
-          continue;
-        }
-      }
-
-    }
+    return duration[0] == "0"
+        ? duration.sublist(1).join(":")
+        : duration.join(":");
   }
 }

@@ -1,3 +1,6 @@
+#
+#{Madi Kuanai}
+#
 name: youtube_media
 description: This is a YouTube Media downloader. You can download music and video
 
@@ -46,6 +49,7 @@ dependencies:
   path_provider: ^2.0.0
   flutter_ffmpeg: ^0.4.2
   shimmer: ^2.0.0
+
   #permission_handler: ^6.1.1
 
 
@@ -88,11 +92,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/Fonts/Poppins-ExtraLight.ttf
+
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
