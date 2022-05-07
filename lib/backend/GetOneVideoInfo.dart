@@ -14,7 +14,6 @@ class GetYouTubeInfo {
   static var _time;
   static var _title;
   static var _videoLink;
-  static var _musicLink;
   static var _channelImgLink;
   static String? _channelName;
   static String? _description;
@@ -31,13 +30,12 @@ class GetYouTubeInfo {
         .split(".")[0]
         .toString()
         .split(":"));
+
     _title = video.title;
     _videoLink = video.url;
-    _musicLink = "https://vk.com/";
     _channelImgLink = channel.logoUrl;
     _channelName = channel.title;
     _description = video.description.toString();
-    print("time" + _time);
     _idVideo = video.id.toString();
     _isFavourite = PreferenceService.checkFavourite(_id);
     return VideoModel(
@@ -49,7 +47,7 @@ class GetYouTubeInfo {
             : _title,
         _time,
         _videoLink,
-        _musicLink,
+
         _channelName!,
         _description!,
         _isFavourite);

@@ -27,6 +27,9 @@ class Downloader {
   /* Download mp3 stream with videoId */
   /* Get mp3 link with videoId*/
   static Future<bool> downloadMp3(videoId, title) async {
+    Map<Permission, PermissionState> permission =
+        await PermissionsPlugin.requestPermissions(
+            [Permission.WRITE_EXTERNAL_STORAGE]);
     try {
       var youtube = YoutubeExplode();
       var manifest = await youtube.videos.streamsClient.getManifest(videoId);
@@ -36,7 +39,9 @@ class Downloader {
       print("URL: " + streamInfo.toString());
       // Open a file for writing.
       Directory? tempDir = await DownloadsPathProvider.downloadsDirectory;
-      var filePath = tempDir!.path + '/$title' + ".mp3";
+      var filePath = tempDir!.path +
+          '/${title.toString().replaceAll(" ", "").replaceFirst("...", "")}' +
+          ".mp3";
       var file = File(filePath);
       var fileStream = file.openWrite();
 

@@ -3,17 +3,16 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youtube_media/backend/PreferenceService.dart';
 import 'package:youtube_media/screens/HomeScreen/HomePage.dart';
-import 'package:youtube_media/screens/SliderScreen/SliderScreen.dart';
-
-import 'Consts.dart';
+import 'package:youtube_media/screens/SplashScreen/SplashScreen.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await PreferenceService.init();
-  runApp(MyApp());
+  runApp(Phoenix(child:
+      MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
     String? isCodeExist = PreferenceService.getLastLocal();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: isCodeExist != null ? HomePage() : SplashScreen(),
+      home: isCodeExist != null ? HomePage() : const SplashScreen(),
     );
   }
 }

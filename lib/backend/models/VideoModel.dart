@@ -11,7 +11,6 @@ class VideoModel {
   final String _title;
   final String _time;
   final String _videoUrl;
-  final String _musicUrl;
   final String _channelName;
   final String _description;
   bool _isFavourite;
@@ -23,7 +22,6 @@ class VideoModel {
       this._title,
       this._time,
       this._videoUrl,
-      this._musicUrl,
       this._channelName,
       this._description,
       this._isFavourite);
@@ -40,8 +38,6 @@ class VideoModel {
   bool get getIsFavourite => _isFavourite;
 
   String get getVideoUrl => _videoUrl;
-
-  String get getMusicUrl => _musicUrl;
 
   String get getChannelImgLink => _channelImgLink;
 

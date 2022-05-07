@@ -4,20 +4,27 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:youtube_media/backend/PreferenceService.dart';
-import 'package:youtube_media/components/Scrolls.dart';
+import 'package:youtube_media/components/getVideoCards.dart';
 import '../../../Consts.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 
 import '../../../backend/SearchThreadVideos.dart';
 
 class Body extends StatefulWidget {
+  var _code;
+
+  Body(this._code);
+
   @override
-  State<StatefulWidget> createState() => BodyState();
+  State<StatefulWidget> createState() => BodyState(_code);
 }
 
 class BodyState extends State<Body> {
   static var ytList;
   bool isDownload = false;
+  var code;
+
+  BodyState(this.code);
 
   @override
   void initState() {
@@ -61,8 +68,7 @@ class BodyState extends State<Body> {
   }
 
   Future<void> initVideos() async {
-
-    await SearchApi().getTrends("RU").then((video) {
+    await SearchApi().getTrends(code).then((video) {
       if (mounted) {
         setState(() {
           ytList = video;

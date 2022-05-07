@@ -8,7 +8,7 @@ import 'package:youtube_media/backend/GetOneVideoInfo.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 
 import '../../Consts.dart';
-import '../../components/Scrolls.dart';
+import '../../components/getVideoCards.dart';
 
 class FavouritePage extends StatefulWidget {
   const FavouritePage({Key? key}) : super(key: key);
@@ -58,7 +58,7 @@ class _FavouritePageState extends State<FavouritePage> {
           : isDownloading
               ? buildLoadingContainer(_width, _height)
               : Container(
-                  color: Colors.black87,
+                  color: Colors.black12,
                   alignment: Alignment.center,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -87,7 +87,7 @@ class _FavouritePageState extends State<FavouritePage> {
                                 ),
                               ],
                             )),
-                        const Icon(Icons.bookmark_border)
+                        const Icon(Icons.bookmark_border, color: Colors.white12,)
                       ])),
     );
   }
@@ -107,9 +107,10 @@ class _FavouritePageState extends State<FavouritePage> {
 
   Future<Null> getVideoModels() async {
     List<VideoModel>? lst = [];
+    print(PreferenceService.getFavourites());
     for (String key in PreferenceService.getFavourites()) {
-      print(key);
-      await GetYouTubeInfo.getData(key).then((value) => {lst.add(value)});
+      if(key != "TrendLocal")
+        await GetYouTubeInfo.getData(key).then((value) => {lst.add(value)});
     }
     setState(() {
       ytList = lst;

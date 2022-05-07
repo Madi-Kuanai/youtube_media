@@ -1,3 +1,7 @@
+/*
+* {Madi Kuanai}
+*/
+
 import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
@@ -14,10 +18,12 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  var _code;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var _code;
+
     return Container(
       child: OnBoardingSlider(
         pageBackgroundColor: Colors.black87,
@@ -141,7 +147,8 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                     onChanged: (countryCode) {
                       setState(() {
-                        _code = countryCode;
+                        _code = countryCode!.code;
+                        print("Code: $_code");
                       });
                     },
                   ),
@@ -153,8 +160,9 @@ class _SplashScreenState extends State<SplashScreen> {
         headerBackgroundColor: Colors.black87,
         speed: 1.8,
         finishButtonColor: Colors.indigoAccent,
-        finishButtonText: "Finish",
+        finishButtonText: "Start",
         onFinish: () {
+          print("Code1: $_code");
           PreferenceService.setLastLocal(_code);
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => HomePage()));

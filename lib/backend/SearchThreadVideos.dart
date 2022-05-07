@@ -27,7 +27,6 @@ class SearchApi {
       var _title = element.title;
       var _videoLink = element.url;
       var _channelName = element.channelTitle;
-      var _musicLink = "https://vk.com/";
       var _isFavourite = PreferenceService.checkFavourite(_id);
       result.add(VideoModel(
           _id,
@@ -40,7 +39,6 @@ class SearchApi {
               : _title,
           _time,
           _videoLink,
-          _musicLink,
           _channelName,
           _description,
           _isFavourite));
@@ -64,7 +62,6 @@ class SearchApi {
       var _title = element.title;
       var _videoLink = element.url;
       var _channelName = element.channelTitle;
-      var _musicLink = "https://vk.com/";
       var _isFavourite = PreferenceService.checkFavourite(_id);
 
       result.add(VideoModel(
@@ -78,7 +75,6 @@ class SearchApi {
               : _title,
           _time.toString(),
           _videoLink,
-          _musicLink,
           _channelName,
           _description,
           _isFavourite));

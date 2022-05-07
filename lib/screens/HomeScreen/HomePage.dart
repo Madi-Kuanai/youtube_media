@@ -1,7 +1,9 @@
 /*
 * {Madi Kuanai}
 */
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:youtube_media/screens/FavouriteScreen/FavouriteScreen.dart';
 import 'package:youtube_media/screens/SearchScreen/SearchPage.dart';
@@ -18,10 +20,12 @@ class HomeState extends State<HomePage> {
   int _index = 0;
   var _width;
   var _height;
+  var _code;
 
   @override
   void initState() {
     setState(() {
+      _code = PreferenceService.getLastLocal();
       _index = 0;
     });
     super.initState();
@@ -36,7 +40,7 @@ class HomeState extends State<HomePage> {
     });
     return Scaffold(
       appBar: MyAppBar(),
-      body: _index == 0 ? Body() : const FavouritePage(),
+      body: _index == 0 ? Body(_code) : const FavouritePage(),
       bottomNavigationBar: GNavi(MediaQuery.of(context).size),
       resizeToAvoidBottomInset: false,
     );
@@ -92,14 +96,6 @@ class HomeState extends State<HomePage> {
         backgroundColor: Colors.black87,
         actions: [
           CountryListPick(
-            pickerBuilder: ((
-              context,
-              countryCode,
-            ) =>
-                const Icon(
-                  Icons.place_outlined,
-                  color: Colors.white,
-                )),
             useUiOverlay: true,
             useSafeArea: false,
             appBar: AppBar(
@@ -108,14 +104,74 @@ class HomeState extends State<HomePage> {
                 style: TextStyle(fontSize: 14),
               ),
             ),
+            pickerBuilder: ((
+              context,
+              countryCode,
+            ) =>
+                const Icon(
+                  Icons.place_outlined,
+                  color: Colors.white,
+                )),
             theme: CountryTheme(
               isShowFlag: true,
               isShowTitle: true,
               isDownIcon: true,
+              isShowCode: true,
+              initialSelection: _code,
+              alphabetSelectedBackgroundColor: Colors.black12,
               showEnglishName: true,
+              lastPickText: "Last county is: " + _code,
             ),
-            onChanged: (countryCode) =>
-                {PreferenceService.setLastLocal(countryCode!.code.toString())},
+            onChanged: (countryCode) {
+              PreferenceService.setLastLocal(countryCode!.code.toString());
+              setState(() {
+                _code = countryCode.code.toString();
+              });
+              showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => Theme(
+                      data: ThemeData.dark(),
+                      child: CupertinoAlertDialog(
+                        content: SizedBox(
+                          // color: const Color(0xff2B2B34),
+                          width: _width * 0.7,
+                          height: _height * 0.3,
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.done,
+                                size: _width * 0.2,
+                                color: const Color(0xff5B89E5),
+                              ),
+                              const Text("Attention",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: "Poppins",
+                                      color: Colors.white)),
+                              Container(
+                                margin: EdgeInsets.only(top: _height * 0.01),
+                                child: const Text(
+                                  "If you have chosen a different country, you need to restart the program",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        actions: [
+
+                          CupertinoDialogAction(
+                              child: const Text("Done"),
+                              onPressed: () => Navigator.pop(context, false))
+                        ],
+                      ))).then((value) {
+              });
+            },
           ),
           Container(
             margin: EdgeInsets.only(right: _width * 0.05),
