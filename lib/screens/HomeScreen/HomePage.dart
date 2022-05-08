@@ -96,6 +96,7 @@ class HomeState extends State<HomePage> {
         backgroundColor: Colors.black87,
         actions: [
           CountryListPick(
+            initialSelection: _code,
             useUiOverlay: true,
             useSafeArea: false,
             appBar: AppBar(
@@ -118,10 +119,12 @@ class HomeState extends State<HomePage> {
               isDownIcon: true,
               isShowCode: true,
               initialSelection: _code,
+
               alphabetSelectedBackgroundColor: Colors.black12,
               showEnglishName: true,
               lastPickText: "Last county is: " + _code,
             ),
+
             onChanged: (countryCode) {
               PreferenceService.setLastLocal(countryCode!.code.toString());
               setState(() {
@@ -132,6 +135,7 @@ class HomeState extends State<HomePage> {
                   barrierDismissible: false,
                   builder: (_) => Theme(
                       data: ThemeData.dark(),
+
                       child: CupertinoAlertDialog(
                         content: SizedBox(
                           // color: const Color(0xff2B2B34),

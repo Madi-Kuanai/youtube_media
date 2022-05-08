@@ -32,6 +32,7 @@ class _GetCardState extends State<GetCard> {
   var _channelName;
   var video;
   var _isFavourite;
+  var _description;
 
   _GetCardState(this.width, this.height, this.video);
 
@@ -47,6 +48,7 @@ class _GetCardState extends State<GetCard> {
         _videoLink = video.getVideoUrl;
         _channelImg = video.getChannelImgLink;
         _isFavourite = video.isFavourite;
+        _description = video.getDescription;
       });
     }
   }
@@ -71,7 +73,7 @@ class _GetCardState extends State<GetCard> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => VideoPlayerPage(_id)),
+              MaterialPageRoute(builder: (context) => VideoPlayerPage(_id, _description, _isFavourite)),
             );
           },
           child: Column(
@@ -168,7 +170,6 @@ class _GetCardState extends State<GetCard> {
                               addDeleteFavourite();
                               _isFavourite = !_isFavourite;
                             });
-                            print("TAP");
                           },
                         )),
 

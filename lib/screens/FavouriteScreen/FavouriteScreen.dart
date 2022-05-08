@@ -1,6 +1,7 @@
 /*
 * {Madi Kuanai}
 */
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:youtube_media/backend/PreferenceService.dart';
@@ -48,7 +49,24 @@ class _FavouritePageState extends State<FavouritePage> {
                   onRefresh: getVideoModels,
                   child: ListView.separated(
                       itemBuilder: (BuildContext context, int index) =>
-                          GetCard(_width, _height, ytList![index]),
+                          Dismissible(
+                              key: UniqueKey(),
+                              onDismissed: (DismissDirection direction) {
+                                deleteFavourite(ytList![index].getId);
+                              },
+                              direction: DismissDirection.endToStart,
+                              background: Container(
+                                alignment: Alignment.centerRight,
+                                color: Colors.white12,
+                                child: Container(
+                                  child: Icon(
+                                    Icons.delete_outline,
+                                    size: _width * 0.1,
+                                  ),
+                                  margin: EdgeInsets.only(right: _width * 0.05),
+                                )
+                              ),
+                              child: GetCard(_width, _height, ytList![index])),
                       separatorBuilder: (BuildContext context, int index) =>
                           const Divider(
                             height: 1,
@@ -87,7 +105,10 @@ class _FavouritePageState extends State<FavouritePage> {
                                 ),
                               ],
                             )),
-                        const Icon(Icons.bookmark_border, color: Colors.white12,)
+                        const Icon(
+                          Icons.bookmark_border,
+                          color: Colors.white12,
+                        )
                       ])),
     );
   }
@@ -105,12 +126,16 @@ class _FavouritePageState extends State<FavouritePage> {
     );
   }
 
-  Future<Null> getVideoModels() async {
+  void deleteFavourite(String id) async {
+    await PreferenceService.deleteFavourite(id);
+  }
+
+  Future<void> getVideoModels() async {
     List<VideoModel>? lst = [];
-    print(PreferenceService.getFavourites());
     for (String key in PreferenceService.getFavourites()) {
-      if(key != "TrendLocal")
+      if (key != "TrendLocal") {
         await GetYouTubeInfo.getData(key).then((value) => {lst.add(value)});
+      }
     }
     setState(() {
       ytList = lst;

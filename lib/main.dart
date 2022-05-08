@@ -2,17 +2,17 @@
 * {Madi Kuanai}
 */
 
+import 'package:country_list_pick/country_selection_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_media/backend/PreferenceService.dart';
 import 'package:youtube_media/screens/HomeScreen/HomePage.dart';
 import 'package:youtube_media/screens/SplashScreen/SplashScreen.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await PreferenceService.init();
-  runApp(Phoenix(child:
-      MyApp()));
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
