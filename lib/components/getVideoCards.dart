@@ -33,6 +33,7 @@ class _GetCardState extends State<GetCard> {
   var video;
   var _isFavourite;
   var _description;
+  var _fullTitile;
 
   _GetCardState(this.width, this.height, this.video);
 
@@ -43,6 +44,7 @@ class _GetCardState extends State<GetCard> {
         _id = video.getId;
         _ImageLink = video.getImageUrl;
         _title = video.getTitle;
+        _fullTitile = video.getFullTitle;
         _time = video.getTime;
         _channelName = video.getChannelName;
         _videoLink = video.getVideoUrl;
@@ -73,7 +75,7 @@ class _GetCardState extends State<GetCard> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => VideoPlayerPage(_id, _description, _isFavourite)),
+              MaterialPageRoute(builder: (context) => VideoPlayerPage(_id, _description, _isFavourite, _fullTitile)),
             );
           },
           child: Column(

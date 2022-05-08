@@ -11,19 +11,21 @@ class VideoPlayerPage extends StatefulWidget {
   final _id;
   final _description;
   final bool? _isFavourite;
+  final _fullTitle;
 
-  const VideoPlayerPage(this._id, this._description, this._isFavourite,
+  const VideoPlayerPage(this._id, this._description, this._isFavourite, this._fullTitle,
       {Key? key})
       : super(key: key);
 
   @override
   State<VideoPlayerPage> createState() =>
-      _VideoPlayerPageState(_id, _description, _isFavourite);
+      _VideoPlayerPageState(_id, _description, _isFavourite, this._fullTitle);
 }
 
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
   final String _id;
   final String _description;
+  late var _fullTitle;
   bool isExpanded = false;
   bool? _isFavourite;
 
@@ -31,8 +33,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   late double _height;
   late YoutubePlayerController youtubePlayerController;
 
-  _VideoPlayerPageState(this._id, this._description, this._isFavourite) {
+  _VideoPlayerPageState(this._id, this._description, this._isFavourite, this._fullTitle) {
     _isFavourite ??= PreferenceService.checkFavourite(_id);
+    print("Full: "  +  _fullTitle.toString());
   }
 
   @override
@@ -116,7 +119,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                                         horizontal: _width * 0.025,
                                         vertical: _height * 0.0055),
                                     child: Text(
-                                      youtubePlayerController.metadata.title ?? "Null",
+                                      _fullTitle,
                                       style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 16,

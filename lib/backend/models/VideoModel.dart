@@ -9,17 +9,19 @@ class VideoModel {
   final String _channelImgLink;
   final String _imageUrl;
   final String _title;
+  final String _fullTitle;
   final String _time;
   final String _videoUrl;
   final String _channelName;
   final String _description;
-  bool _isFavourite;
+  final bool _isFavourite;
 
   VideoModel(
       this._id,
       this._channelImgLink,
       this._imageUrl,
       this._title,
+      this._fullTitle,
       this._time,
       this._videoUrl,
       this._channelName,
@@ -44,6 +46,8 @@ class VideoModel {
   String get getChannelName => _channelName;
 
   String get getDescription => _description;
+
+  String get getFullTitle => _fullTitle;
 
   bool get isFavourite {
     /*-- Function to check whether a video is a favorite   --*/

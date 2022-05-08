@@ -45,6 +45,7 @@ class GetYouTubeInfo {
         _title.toString().length > 25
             ? _title.toString().substring(0, 22) + "..."
             : _title,
+        _title,
         _time,
         _videoLink,
 
