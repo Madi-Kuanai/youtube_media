@@ -5,7 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:youtube_media/backend/PreferenceService.dart';
-import 'package:youtube_media/backend/GetOneVideoInfo.dart';
+import 'package:youtube_media/backend/GetOnlyOneVideoInfo.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 
 import '../../Consts.dart';
@@ -38,7 +38,7 @@ class _FavouritePageState extends State<FavouritePage> {
       width: _width,
       height: _height,
       alignment: Alignment.topCenter,
-      color: const Color(0xff141213),
+      color: const Color(0xff1a1819),
       child: !isEmpty
           ? SizedBox(
               width: _width,

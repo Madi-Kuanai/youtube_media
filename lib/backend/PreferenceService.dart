@@ -30,6 +30,5 @@ class PreferenceService {
 
   static setLastLocal(String local) async {
     await _pref!.setString(Consts.lastLocal, local);
-    print(local);
   }
 }

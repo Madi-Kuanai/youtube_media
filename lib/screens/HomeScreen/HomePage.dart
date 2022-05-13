@@ -3,7 +3,6 @@
 */
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:youtube_media/screens/FavouriteScreen/FavouriteScreen.dart';
 import 'package:youtube_media/screens/SearchScreen/SearchPage.dart';

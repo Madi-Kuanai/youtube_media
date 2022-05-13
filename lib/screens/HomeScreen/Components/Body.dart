@@ -1,8 +1,10 @@
 /*
 * {Madi Kuanai}
 */
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:youtube_media/backend/PreferenceService.dart';
 import 'package:youtube_media/components/getVideoCards.dart';
 import '../../../Consts.dart';
@@ -21,7 +23,7 @@ class Body extends StatefulWidget {
 
 class BodyState extends State<Body> {
   static var ytList;
-  bool isDownload = false;
+  bool isDownload = false, isError = false;
   var code;
 
   BodyState(this.code);
@@ -37,7 +39,7 @@ class BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
     var _width = size.width;
     var _height = size.height;
-    return ytList != null
+    return ytList != null && !isError
         ? SizedBox(
             width: _width,
             height: _height,
@@ -55,25 +57,58 @@ class BodyState extends State<Body> {
                         ),
                     itemCount: ytList.length)),
           )
-        : Container(
-            alignment: Alignment.center,
-            width: _width,
-            height: _height,
-            color: const Color(
-              0xff222222,
-            ),
-            child: Lottie.asset("${Consts.lottiePath}loading_animation.json",
-                width: _width * 0.3, height: _height * 0.2),
-          );
+        : isError
+            ? Container()
+            : Container(
+                alignment: Alignment.center,
+                width: _width,
+                height: _height,
+                color: const Color(
+                  0xff222222,
+                ),
+                child: Lottie.asset(
+                    "${Consts.lottiePath}loading_animation.json",
+                    width: _width * 0.3,
+                    height: _height * 0.2),
+              );
   }
 
   Future<void> initVideos() async {
     await SearchApi().getTrends(code).then((video) {
       if (mounted) {
-        setState(() {
-          ytList = video;
-        });
+        if (video[0].getId == "0") {
+          showCupertinoDialog(
+              context: context,
+              builder: (context) {
+                return CupertinoAlertDialog(
+                  title: const Text(
+                    "Error of the selected location",
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  content: const Text(
+                      "Sorry, but YouTube does not support the trend of the selected country. Change the selected location or set the automatic location (USA)"),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: const Text("OK"),
+                      onPressed: () {
+                        Navigator.pop(context, true);
+                      },
+                    ),
+                  ],
+                );
+              }).then((value) => {
+                if (value == true)
+                  {isError = true, PreferenceService.setLastLocal("US"), Restart.restartApp()}
+              });
+          return;
+        }
       }
+      setState(() {
+        ytList = video;
+      });
     });
   }
 }

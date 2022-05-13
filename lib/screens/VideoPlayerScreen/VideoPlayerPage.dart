@@ -13,7 +13,7 @@ class VideoPlayerPage extends StatefulWidget {
   final bool? _isFavourite;
   final _fullTitle;
 
-  const VideoPlayerPage(this._id, this._description, this._isFavourite, this._fullTitle,
+  VideoPlayerPage(this._id, this._description, this._isFavourite, this._fullTitle,
       {Key? key})
       : super(key: key);
 
@@ -35,7 +35,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
 
   _VideoPlayerPageState(this._id, this._description, this._isFavourite, this._fullTitle) {
     _isFavourite ??= PreferenceService.checkFavourite(_id);
-    print("Full: "  +  _fullTitle.toString());
   }
 
   @override

@@ -47,21 +47,22 @@ class SearchApi {
   /* Func for get YouTube trends for local */
   Future<List<VideoModel>> getTrends(String local) async {
     List<VideoModel> result = [];
+    try{
     List<YouTubeVideo> tempResult = await yt.getTrends(
       regionCode: local,
     );
+
     for (YouTubeVideo element in tempResult) {
       var _id = element.id.toString();
       var _description = element.description.toString();
       var _imageLink = element.thumbnail.medium.url;
       var _channelImgLink =
-          (await ytExplode.channels.get(element.channelId)).logoUrl.toString();
+      (await ytExplode.channels.get(element.channelId)).logoUrl.toString();
       var _time = element.duration.toString();
       var _title = element.title;
       var _videoLink = element.url;
       var _channelName = element.channelTitle;
       var _isFavourite = PreferenceService.checkFavourite(_id);
-      print("TITLE: " + _title);
       result.add(VideoModel(
           _id,
           _channelImgLink,
@@ -76,7 +77,10 @@ class SearchApi {
           _description,
           _isFavourite));
     }
-
+    }
+    catch (ex){
+      result.add(VideoModel("0", "", "", "", "0", "0", "0", "0", "0", false));
+    }
     return result;
   }
 }

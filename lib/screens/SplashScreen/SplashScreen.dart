@@ -133,6 +133,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             ])),
                     useUiOverlay: true,
                     useSafeArea: false,
+                    initialSelection: "US",
                     appBar: AppBar(
                       title: const Text(
                         "Select the country whose trend you want to see",
@@ -140,6 +141,8 @@ class _SplashScreenState extends State<SplashScreen> {
                       ),
                     ),
                     theme: CountryTheme(
+                      initialSelection: "US",
+
                       isShowFlag: true,
                       isShowTitle: true,
                       isDownIcon: true,
