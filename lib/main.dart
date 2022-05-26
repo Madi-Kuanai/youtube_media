@@ -1,3 +1,4 @@
+// @dart=2.9
 /*
 * {Madi Kuanai}
 */
@@ -18,7 +19,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String? isCodeExist = PreferenceService.getLastLocal();
+    String isCodeExist = PreferenceService.getLastLocal();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: isCodeExist != null ? HomePage() : const SplashScreen(),

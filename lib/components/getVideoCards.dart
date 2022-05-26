@@ -59,6 +59,7 @@ class _GetCardState extends State<GetCard> {
   void initState() {
     super.initState();
     getInfo();
+
   }
 
   @override
@@ -69,7 +70,7 @@ class _GetCardState extends State<GetCard> {
               width: 1,
             ),
             color: const Color(0xff141213)),
-        height: height * 0.45,
+        height: height * 0.475,
         width: width,
         child: GestureDetector(
           onTap: () {

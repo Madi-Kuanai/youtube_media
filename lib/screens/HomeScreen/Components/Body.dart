@@ -10,7 +10,7 @@ import 'package:youtube_media/components/getVideoCards.dart';
 import '../../../Consts.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 
-import '../../../backend/SearchThreadVideos.dart';
+import '../../../backend/SearchVideo.dart';
 
 class Body extends StatefulWidget {
   var _code;

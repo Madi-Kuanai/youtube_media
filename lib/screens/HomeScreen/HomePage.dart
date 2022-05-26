@@ -38,7 +38,7 @@ class HomeState extends State<HomePage> {
       _height = size.height;
     });
     return Scaffold(
-      appBar: MyAppBar(),
+      appBar: myAppBar(),
       body: _index == 0 ? Body(_code) : const FavouritePage(),
       bottomNavigationBar: GNavi(MediaQuery.of(context).size),
       resizeToAvoidBottomInset: false,
@@ -51,8 +51,7 @@ class HomeState extends State<HomePage> {
         decoration: const BoxDecoration(
           color: Colors.black87,
         ),
-        child: Flexible(
-            child: GNav(
+        child: GNav(
           tabBorderRadius: 15,
           curve: Curves.easeInOut,
           duration: const Duration(milliseconds: 200),
@@ -79,10 +78,10 @@ class HomeState extends State<HomePage> {
               onPressed: () => setState(() => _index = 1),
             ),
           ],
-        )));
+        ));
   }
 
-  AppBar MyAppBar() => AppBar(
+  AppBar myAppBar() => AppBar(
         title: Row(
           children: const [
             Icon(Icons.download),
