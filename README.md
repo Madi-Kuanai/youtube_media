@@ -4,7 +4,7 @@ This is a YouTube Media downloader. You can download music and video
 
 
 # Current status
-Current status - under development
+Current status - verison 1.0.0
 
 
 # Download repository
