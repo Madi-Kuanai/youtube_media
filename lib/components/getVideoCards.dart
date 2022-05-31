@@ -7,7 +7,7 @@ import 'package:youtube_media/backend/Downloader.dart';
 import 'package:youtube_media/screens/VideoPlayerScreen/VideoPlayerPage.dart';
 
 import '../backend/models/VideoModel.dart';
-import '../Consts.dart';
+import '../consts.dart';
 
 class GetCard extends StatefulWidget {
   double width;
@@ -33,7 +33,9 @@ class _GetCardState extends State<GetCard> {
   var video;
   var _isFavourite;
   var _description;
-  var _fullTitile;
+  var _fullTitle;
+  var _publishedTime;
+  var _publishedDate;
 
   _GetCardState(this.width, this.height, this.video);
 
@@ -44,13 +46,15 @@ class _GetCardState extends State<GetCard> {
         _id = video.getId;
         _ImageLink = video.getImageUrl;
         _title = video.getTitle;
-        _fullTitile = video.getFullTitle;
+        _fullTitle = video.getFullTitle;
         _time = video.getTime;
         _channelName = video.getChannelName;
         _videoLink = video.getVideoUrl;
         _channelImg = video.getChannelImgLink;
         _isFavourite = video.isFavourite;
         _description = video.getDescription;
+        _publishedTime = video.getPublishedTime;
+        _publishedDate = video.getPublishedDate;
       });
     }
   }
@@ -59,7 +63,6 @@ class _GetCardState extends State<GetCard> {
   void initState() {
     super.initState();
     getInfo();
-
   }
 
   @override
@@ -70,13 +73,15 @@ class _GetCardState extends State<GetCard> {
               width: 1,
             ),
             color: const Color(0xff141213)),
-        height: height * 0.475,
+        height: height * 0.48,
         width: width,
         child: GestureDetector(
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => VideoPlayerPage(_id, _description, _isFavourite, _fullTitile)),
+              MaterialPageRoute(
+                  builder: (context) => VideoPlayerPage(
+                      _id, _description, _isFavourite, _fullTitle, _publishedDate, _publishedTime)),
             );
           },
           child: Column(
@@ -129,6 +134,7 @@ class _GetCardState extends State<GetCard> {
                         )),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
                             width: width * 0.65,
@@ -136,23 +142,33 @@ class _GetCardState extends State<GetCard> {
                             margin: EdgeInsets.only(
                                 left: width * 0.03, top: height * 0.02),
                             child: Flex(direction: Axis.horizontal, children: [
-                              Text(
-                                _title ?? "Load...",
+                              Expanded(
+                                  child: Text(
+                                _fullTitle ?? "Load...",
                                 style: const TextStyle(
-                                    fontSize: 16, color: Colors.white),
+                                    fontSize: 14, color: Colors.white),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 softWrap: false,
-                              )
+                              ))
                             ])),
                         Container(
+                          width: width * 0.65,
                           margin: EdgeInsets.only(
                               left: width * 0.03, top: height * 0.005),
-                          child: Text(
-                            _channelName ?? "",
-                            style: const TextStyle(
-                                fontSize: 14, color: Colors.white54),
-                          ),
+                          child: Flex(direction: Axis.horizontal, children: [
+                            Expanded(
+                                child: Text(
+                              _channelName ?? "",
+                              maxLines: 1,
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.white54,
+                              ),
+                            ))
+                          ]),
                         )
                       ],
                     ),
@@ -195,10 +211,34 @@ class _GetCardState extends State<GetCard> {
                                   PopupMenuItem(
                                     child: const Text("Video Download",
                                         style: TextStyle(color: Colors.white)),
-                                    onTap: () => {downloadVideo(_videoLink, _title)},
+                                    onTap: () =>
+                                        {downloadVideo(_videoLink, _title)},
                                     value: 2,
                                   )
                                 ]))
+                  ],
+                ),
+              ),
+              Container(
+                width: width,
+                margin:
+                    EdgeInsets.only(left: width * 0.15, top: height * 0.005),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Published At:  " + _publishedDate,
+                      style:
+                          const TextStyle(color: Colors.white54, fontSize: 12),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: width * 0.025),
+                      child: Text(
+                        _publishedTime,
+                        style:
+                        const TextStyle(color: Colors.white54, fontSize: 12),
+                      ),
+                    )
                   ],
                 ),
               )

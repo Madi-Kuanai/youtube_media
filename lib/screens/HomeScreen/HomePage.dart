@@ -4,6 +4,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:youtube_media/screens/FavouriteScreen/FavouriteScreen.dart';
 import 'package:youtube_media/screens/SearchScreen/SearchPage.dart';
 import '../../backend/PreferenceService.dart';
@@ -117,12 +118,10 @@ class HomeState extends State<HomePage> {
               isDownIcon: true,
               isShowCode: true,
               initialSelection: _code,
-
               alphabetSelectedBackgroundColor: Colors.black12,
               showEnglishName: true,
               lastPickText: "Last county is: " + _code,
             ),
-
             onChanged: (countryCode) {
               PreferenceService.setLastLocal(countryCode!.code.toString());
               setState(() {
@@ -133,7 +132,6 @@ class HomeState extends State<HomePage> {
                   barrierDismissible: false,
                   builder: (_) => Theme(
                       data: ThemeData.dark(),
-
                       child: CupertinoAlertDialog(
                         content: SizedBox(
                           // color: const Color(0xff2B2B34),
@@ -166,13 +164,19 @@ class HomeState extends State<HomePage> {
                           ),
                         ),
                         actions: [
-
                           CupertinoDialogAction(
-                              child: const Text("Done"),
-                              onPressed: () => Navigator.pop(context, false))
+                              child: const Text("Skip"),
+                              onPressed: () {
+                                Navigator.pop(context, false);
+                              }),
+                          CupertinoDialogAction(
+                              child: const Text("Reset"),
+                              onPressed: () {
+                                Navigator.pop(context, true);
+                                Restart.restartApp();
+                              })
                         ],
-                      ))).then((value) {
-              });
+                      ))).then((value) {});
             },
           ),
           Container(

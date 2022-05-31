@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
-import 'package:youtube_media/Consts.dart';
+import 'package:youtube_media/consts.dart';
 import 'package:youtube_media/backend/SearchVideo.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 import 'package:flutter_svg/flutter_svg.dart';

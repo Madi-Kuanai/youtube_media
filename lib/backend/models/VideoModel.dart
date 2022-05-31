@@ -15,6 +15,8 @@ class VideoModel {
   final String _channelName;
   final String _description;
   final bool _isFavourite;
+  final String _publishedDate;
+  final String _publishedTime;
 
   VideoModel(
       this._id,
@@ -26,7 +28,9 @@ class VideoModel {
       this._videoUrl,
       this._channelName,
       this._description,
-      this._isFavourite);
+      this._isFavourite,
+      this._publishedDate,
+      this._publishedTime);
 
   /*-------------------------Getters------------------*/
   String get getId => _id;
@@ -48,6 +52,10 @@ class VideoModel {
   String get getDescription => _description;
 
   String get getFullTitle => _fullTitle;
+
+  String get getPublishedDate => _publishedDate;
+
+  String get getPublishedTime => _publishedTime;
 
   bool get isFavourite {
     /*-- Function to check whether a video is a favorite   --*/

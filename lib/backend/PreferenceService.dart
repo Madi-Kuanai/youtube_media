@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:youtube_media/Consts.dart';
+import 'package:youtube_media/consts.dart';
 
 class PreferenceService {
   static SharedPreferences? _pref;

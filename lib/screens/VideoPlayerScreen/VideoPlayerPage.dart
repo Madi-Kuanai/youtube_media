@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:youtube_media/backend/PreferenceService.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import '../../Consts.dart';
+import '../../consts.dart';
 import '../../backend/Downloader.dart';
 import 'package:clipboard/clipboard.dart';
 
@@ -12,19 +12,24 @@ class VideoPlayerPage extends StatefulWidget {
   final _description;
   final bool? _isFavourite;
   final _fullTitle;
+  final _publishedTime;
+  final _publishedDate;
 
-  VideoPlayerPage(this._id, this._description, this._isFavourite, this._fullTitle,
+  VideoPlayerPage(this._id, this._description, this._isFavourite,
+      this._fullTitle, this._publishedDate, this._publishedTime,
       {Key? key})
       : super(key: key);
 
   @override
-  State<VideoPlayerPage> createState() =>
-      _VideoPlayerPageState(_id, _description, _isFavourite, this._fullTitle);
+  State<VideoPlayerPage> createState() => _VideoPlayerPageState(_id,
+      _description, _isFavourite, _fullTitle, _publishedTime, _publishedDate);
 }
 
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
   final String _id;
   final String _description;
+  final _publishedTime;
+  final _publishedDate;
   late var _fullTitle;
   bool isExpanded = false;
   bool? _isFavourite;
@@ -33,7 +38,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   late double _height;
   late YoutubePlayerController youtubePlayerController;
 
-  _VideoPlayerPageState(this._id, this._description, this._isFavourite, this._fullTitle) {
+  _VideoPlayerPageState(this._id, this._description, this._isFavourite,
+      this._fullTitle, this._publishedTime, this._publishedDate) {
     _isFavourite ??= PreferenceService.checkFavourite(_id);
   }
 
@@ -90,7 +96,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
             },
           ),
           FullScreenButton(),
-
         ],
       ),
       builder: (context, widget) {
@@ -113,26 +118,45 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                         children: [
                           ExpansionPanel(
                               backgroundColor: const Color(0xff141213),
+                              canTapOnHeader: true,
                               headerBuilder: (context, isExpanded) => Container(
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: _width * 0.025,
-                                        vertical: _height * 0.0055),
-                                    child: Text(
-                                      _fullTitle,
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontFamily: "Poppins"),
-                                    ),
-                                  ),
-                              body: Expanded(
-                                child: Container(
-                                  margin: EdgeInsets.all(_width * 0.025),
-                                  child: Text(
-                                    _description,
-                                    style: const TextStyle(
-                                        fontSize: 14, color: Colors.grey),
-                                  ),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: _width * 0.025,
+                                      vertical: _height * 0.0055),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: _width * 0.9,
+                                        child: Text(_fullTitle,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                            ),
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(top: _height * 0.01, bottom: _height * 0.01),
+                                        child: Text(
+                                          "Published At: " +
+                                              _publishedDate +
+                                              ",    " +
+                                              _publishedTime,
+                                          style: const TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 14),
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                              body: Container(
+                                margin: EdgeInsets.all(_width * 0.025),
+                                child: Text(
+                                  _description,
+                                  style: const TextStyle(
+                                      fontSize: 14, color: Colors.grey),
                                 ),
                               ),
                               isExpanded: isExpanded),
@@ -160,7 +184,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                                     !_isFavourite!
                                         ? Icons.bookmark_border
                                         : Icons.bookmark,
-                                    size: _width * 0.1,
+                                    size: _width * 0.075,
                                     color: Colors.white54,
                                   )),
                               IconButton(
@@ -176,13 +200,13 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                                   },
                                   icon: Icon(
                                     Icons.copy,
-                                    size: _width * 0.1,
+                                    size: _width * 0.075,
                                     color: Colors.white54,
                                   )),
                               Container(
                                   alignment: Alignment.bottomCenter,
                                   margin: EdgeInsets.only(top: _height * 0.005),
-                                  width: _width * 0.125,
+                                  width: _width * 0.1,
                                   child: GestureDetector(
                                     onTap: () {
                                       downloadVideo(
@@ -201,7 +225,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                               Container(
                                   alignment: Alignment.bottomCenter,
                                   margin: EdgeInsets.only(top: _height * 0.005),
-                                  width: _width * 0.125,
+                                  width: _width * 0.1,
                                   child: GestureDetector(
                                     onTap: () {
                                       downloadMp3();
@@ -247,7 +271,11 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     youtubePlayerController = YoutubePlayerController(
         initialVideoId: _id,
         flags: const YoutubePlayerFlags(
-            autoPlay: true, enableCaption: false, isLive: false));
+            autoPlay: true,
+            enableCaption: false,
+            isLive: false,
+            controlsVisibleAtStart: true,
+            hideControls: false));
   }
 
   AppBar buildMyAppBar() {

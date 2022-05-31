@@ -8,7 +8,7 @@ import 'package:youtube_media/backend/PreferenceService.dart';
 import 'package:youtube_media/backend/GetOnlyOneVideoInfo.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 
-import '../../Consts.dart';
+import '../../consts.dart';
 import '../../components/getVideoCards.dart';
 
 class FavouritePage extends StatefulWidget {
@@ -56,16 +56,16 @@ class _FavouritePageState extends State<FavouritePage> {
                               },
                               direction: DismissDirection.endToStart,
                               background: Container(
-                                alignment: Alignment.centerRight,
-                                color: Colors.white12,
-                                child: Container(
-                                  child: Icon(
-                                    Icons.delete_outline,
-                                    size: _width * 0.1,
-                                  ),
-                                  margin: EdgeInsets.only(right: _width * 0.05),
-                                )
-                              ),
+                                  alignment: Alignment.centerRight,
+                                  color: Colors.white12,
+                                  child: Container(
+                                    child: Icon(
+                                      Icons.delete_outline,
+                                      size: _width * 0.1,
+                                    ),
+                                    margin:
+                                        EdgeInsets.only(right: _width * 0.05),
+                                  )),
                               child: GetCard(_width, _height, ytList![index])),
                       separatorBuilder: (BuildContext context, int index) =>
                           const Divider(
@@ -137,10 +137,12 @@ class _FavouritePageState extends State<FavouritePage> {
         await GetYouTubeInfo.getData(key).then((value) => {lst.add(value)});
       }
     }
-    setState(() {
-      ytList = lst;
-      isEmpty = lst.isEmpty;
-      isDownloading = false;
-    });
+    if (mounted) {
+      setState(() {
+        ytList = lst;
+        isEmpty = lst.isEmpty;
+        isDownloading = false;
+      });
+    }
   }
 }

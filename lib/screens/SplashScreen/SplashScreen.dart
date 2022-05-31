@@ -6,7 +6,7 @@ import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
 
-import '../../Consts.dart';
+import '../../consts.dart';
 import '../../backend/PreferenceService.dart';
 import '../HomeScreen/HomePage.dart';
 

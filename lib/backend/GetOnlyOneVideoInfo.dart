@@ -8,10 +8,10 @@ import 'PreferenceService.dart';
 
 class GetYouTubeInfo {
   static var yt;
-  static var video;
+  static Video? video;
   static var channel;
   static var _imageLink;
-  static var _time;
+  static var _duration;
   static var _title;
   static var _videoLink;
   static var _channelImgLink;
@@ -19,25 +19,32 @@ class GetYouTubeInfo {
   static String? _description;
   static var _idVideo;
   static var _isFavourite;
+  static var _publishedDate;
+  static var _publishedTime;
 
   static Future<VideoModel> getData(_id) async {
     yt = YoutubeExplode();
     video = await yt.videos.get(_id);
     channel = await yt.channels.getByVideo(_id);
-    _imageLink = video.thumbnails.standardResUrl;
-    _time = _getDuration(Duration(seconds: video.duration!.inSeconds)
+    _imageLink = video!.thumbnails.standardResUrl;
+    _duration = _getDuration(Duration(seconds: video!.duration!.inSeconds)
         .toString()
         .split(".")[0]
         .toString()
         .split(":"));
 
-    _title = video.title;
-    _videoLink = video.url;
+    _title = video!.title;
+    _videoLink = video!.url;
     _channelImgLink = channel.logoUrl;
     _channelName = channel.title;
-    _description = video.description.toString();
-    _idVideo = video.id.toString();
+    _description = video!.description.toString();
+    _idVideo = video!.id.toString();
     _isFavourite = PreferenceService.checkFavourite(_id);
+    _publishedDate = video!.publishDate.toString().split(" ")[0];
+    var _tempPublishedTime =
+        video!.publishDate.toString().split(" ")[1].split(".")[0];
+    _publishedTime =
+        _tempPublishedTime.substring(0, _tempPublishedTime.lastIndexOf(":"));
     return VideoModel(
         _idVideo,
         _channelImgLink,
@@ -46,12 +53,13 @@ class GetYouTubeInfo {
             ? _title.toString().substring(0, 22) + "..."
             : _title,
         _title,
-        _time,
+        _duration,
         _videoLink,
-
         _channelName!,
         _description!,
-        _isFavourite);
+        _isFavourite,
+        _publishedDate,
+        _publishedTime);
   }
 
   @override

@@ -1,10 +1,11 @@
 /*
 * {Madi Kuanai}
 */
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
+
 import 'package:youtube_api/youtube_api.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-import 'package:youtube_media/Consts.dart';
+import 'package:youtube_media/consts.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 import 'package:youtube_media/backend/PreferenceService.dart';
 
@@ -20,6 +21,7 @@ class SearchApi {
           type: "video", order: order, videoDuration: videoDuration);
       for (YouTubeVideo element in tempResult) {
         var _id = element.id.toString();
+
         var _description = element.description.toString();
         var _imageLink = element.thumbnail.medium.url;
         var _channelImgLink =
@@ -29,6 +31,12 @@ class SearchApi {
         var _videoLink = element.url;
         var _channelName = element.channelTitle;
         var _isFavourite = PreferenceService.checkFavourite(_id);
+        //2022-05-25T00:13:16Z
+        var _publishedDate = element.publishedAt
+            ?.substring(0, element.publishedAt?.indexOf("T"));
+        var _publishedTime = element.publishedAt?.substring(
+            element.publishedAt!.indexOf("T"),
+            element.publishedAt?.indexOf("Z"));
         result.add(VideoModel(
             _id,
             _channelImgLink,
@@ -41,11 +49,19 @@ class SearchApi {
             _videoLink,
             _channelName,
             _description,
-            _isFavourite));
+            _isFavourite,
+            _publishedDate!,
+            _publishedTime!));
       }
     } catch (ex) {
-      print("Cant find");
-      result.add(VideoModel("0", "", "", "", "0", "0", "0", "0", "0", false));
+      print("Ex: " + ex.toString());
+      if (ex.runtimeType != SocketException) {
+        result.add(VideoModel(
+            "0", "", "", "", "0", "0", "0", "0", "0", false, "", ""));
+      } else {
+        result.add(VideoModel(
+            "1", "", "", "", "0", "0", "0", "0", "0", false, "", ""));
+      }
     }
     return result;
   }
@@ -61,7 +77,6 @@ class SearchApi {
       for (YouTubeVideo element in tempResult) {
         var _id = element.id.toString();
         var _description = element.description.toString();
-        print(element.publishedAt);
         var _imageLink = element.thumbnail.medium.url;
         var _channelImgLink = (await ytExplode.channels.get(element.channelId))
             .logoUrl
@@ -71,6 +86,11 @@ class SearchApi {
         var _videoLink = element.url;
         var _channelName = element.channelTitle;
         var _isFavourite = PreferenceService.checkFavourite(_id);
+        var _publishedDate = element.publishedAt
+            ?.substring(0, element.publishedAt?.indexOf("T"));
+        String? _publishedTime = element.publishedAt?.substring(
+            element.publishedAt!.indexOf("T") + 1,
+            element.publishedAt!.indexOf("Z") - 3);
         result.add(VideoModel(
             _id,
             _channelImgLink,
@@ -83,10 +103,19 @@ class SearchApi {
             _videoLink,
             _channelName,
             _description,
-            _isFavourite));
+            _isFavourite,
+            _publishedDate!,
+            _publishedTime!));
       }
     } catch (ex) {
-      result.add(VideoModel("0", "", "", "", "0", "0", "0", "0", "0", false));
+      print("Ex: " + ex.toString());
+      if (ex.runtimeType != SocketException) {
+        result.add(VideoModel(
+            "0", "", "", "", "0", "0", "0", "0", "0", false, "", ""));
+      } else {
+        result.add(VideoModel(
+            "1", "", "", "", "0", "0", "0", "0", "0", false, "", ""));
+      }
     }
     return result;
   }
