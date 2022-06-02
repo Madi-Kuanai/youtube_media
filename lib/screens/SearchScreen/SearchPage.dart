@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:youtube_media/consts.dart';
 import 'package:youtube_media/backend/SearchVideo.dart';
 import 'package:youtube_media/backend/models/VideoModel.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../backend/PreferenceService.dart';
 import '../../components/getVideoCards.dart';
+import '../../enums.dart';
+import '../HomeScreen/Components/Body.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -143,11 +145,19 @@ class _SearchPageState extends State<SearchPage> {
         .getSearchResultList(
             textField.text.toString(), mainOrder, mainVideoDuration)
         .then((value) {
+      print(value[0].getId.runtimeType);
       if (value[0].getId == "0") {
-        setState(() {
-          _isError = true;
-          return;
-        });
+        showCustomDialog(
+            "Error of the selected location",
+            "Sorry, but YouTube does not support the trend of the selected country. Change the selected location or set the automatic location (USA)",
+            Errors.NullTrend);
+        return;
+      } else if (value[0].getId == "1") {
+        showCustomDialog(
+            "Internet connection error",
+            "Check your internet connection and try restarting the app",
+            Errors.InternetConnectionError);
+        return;
       }
       searchList = value;
     });
@@ -156,17 +166,16 @@ class _SearchPageState extends State<SearchPage> {
       body = SizedBox(
           width: width,
           height: height,
-          child: Expanded(
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) =>
-                      GetCard(width!, height!, searchList.elementAt(index)),
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(
-                        height: 1,
-                        color: Color(0xff141213),
-                      ),
-                  itemCount: searchList.length)));
+          child: ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) =>
+                  GetCard(width!, height!, searchList.elementAt(index)),
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(
+                    height: 1,
+                    color: Color(0xff141213),
+                  ),
+              itemCount: searchList.length));
     });
   }
 
@@ -208,8 +217,8 @@ class _SearchPageState extends State<SearchPage> {
                                 child: Row(
                                   children: [
                                     GestureDetector(
-                                      child: buildCustomButton("Date", "date",
-                                          _order, 0.3),
+                                      child: buildCustomButton(
+                                          "Date", "date", _order, 0.3),
                                       onTap: () {
                                         stateSetter(() {
                                           _order = "date";
@@ -217,8 +226,8 @@ class _SearchPageState extends State<SearchPage> {
                                       },
                                     ),
                                     GestureDetector(
-                                      child: buildCustomButton("Rating",
-                                          "rating", _order, 0.3),
+                                      child: buildCustomButton(
+                                          "Rating", "rating", _order, 0.3),
                                       onTap: () {
                                         stateSetter(() {
                                           _order = "rating";
@@ -232,7 +241,6 @@ class _SearchPageState extends State<SearchPage> {
                                         stateSetter(() {
                                           _order = "relevance";
                                         });
-                                        print(_order);
                                       },
                                     ),
                                     GestureDetector(
@@ -242,7 +250,6 @@ class _SearchPageState extends State<SearchPage> {
                                         stateSetter(() {
                                           _order = "viewCount";
                                         });
-                                        print(_order);
                                       },
                                     ),
                                   ],
@@ -261,8 +268,8 @@ class _SearchPageState extends State<SearchPage> {
                                 child: Row(
                                   children: [
                                     GestureDetector(
-                                      child: buildCustomButton("Any", "any",
-                                          _duration, 0.3),
+                                      child: buildCustomButton(
+                                          "Any", "any", _duration, 0.3),
                                       onTap: () {
                                         stateSetter(() {
                                           _duration = "any";
@@ -270,8 +277,11 @@ class _SearchPageState extends State<SearchPage> {
                                       },
                                     ),
                                     GestureDetector(
-                                      child: buildCustomButton("Longer than 20 minutes",
-                                          "long", _duration, 0.5),
+                                      child: buildCustomButton(
+                                          "Longer than 20 minutes",
+                                          "long",
+                                          _duration,
+                                          0.5),
                                       onTap: () {
                                         stateSetter(() {
                                           _duration = "long";
@@ -279,23 +289,27 @@ class _SearchPageState extends State<SearchPage> {
                                       },
                                     ),
                                     GestureDetector(
-                                      child: buildCustomButton("Between 4 and 20 minutes long",
-                                          "medium", _duration, 0.6),
+                                      child: buildCustomButton(
+                                          "Between 4 and 20 minutes long",
+                                          "medium",
+                                          _duration,
+                                          0.6),
                                       onTap: () {
                                         stateSetter(() {
                                           _duration = "medium";
                                         });
-                                        print(_duration);
                                       },
                                     ),
                                     GestureDetector(
-                                      child: buildCustomButton("Less than 4 minutes long",
-                                          "short", _duration, 0.5),
+                                      child: buildCustomButton(
+                                          "Less than 4 minutes long",
+                                          "short",
+                                          _duration,
+                                          0.5),
                                       onTap: () {
                                         stateSetter(() {
                                           _duration = "short";
                                         });
-                                        print(_duration);
                                       },
                                     ),
                                   ],
@@ -313,7 +327,8 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  Container buildCustomButton(String title, String order, String tempOrder, double tempWidth) {
+  Container buildCustomButton(
+      String title, String order, String tempOrder, double tempWidth) {
     return Container(
       width: width! * tempWidth,
       height: height! * 0.1,
@@ -326,8 +341,41 @@ class _SearchPageState extends State<SearchPage> {
       ),
       child: Text(
         title,
+        textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.white, fontSize: 16),
       ),
     );
+  }
+
+  void showCustomDialog(String title, String desc, Errors error) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return Theme(
+              data: ThemeData.dark(),
+              child: CupertinoAlertDialog(
+                title: FittedBox(
+                  child: Text(
+                    title,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                content: Text(
+                  desc,
+                  style: TextStyle(
+                      fontSize:
+                          error == Errors.InternetConnectionError ? 14 : 12),
+                ),
+                actions: [
+                  CupertinoDialogAction(
+                    child: const Text("OK"),
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                  ),
+                ],
+              ));
+        });
   }
 }

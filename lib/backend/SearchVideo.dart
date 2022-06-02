@@ -10,7 +10,7 @@ import 'package:youtube_media/backend/models/VideoModel.dart';
 import 'package:youtube_media/backend/PreferenceService.dart';
 
 class SearchApi {
-  static var yt = YoutubeAPI(Consts.Api_key, maxResults: 20, type: "video");
+  static var yt = YoutubeAPI(Consts.Api_key, maxResults: 30, type: "video");
   var ytExplode = YoutubeExplode();
 
   Future<List<VideoModel>> getSearchResultList(

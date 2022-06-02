@@ -54,24 +54,24 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
             playedColor: Colors.red, backgroundColor: Colors.white12),
         topActions: [
           Container(
-            width: _width * 0.96,
-            alignment: Alignment.topRight,
-            child: PopupMenuButton(
-                icon: Icon(Icons.adaptive.more, color: Colors.white, size: 20),
-                color: const Color(0xff211F1D),
-                itemBuilder: (context) => [
-                      const PopupMenuItem(
-                        child: Text("Download video",
-                            style:
-                                TextStyle(fontSize: 16, color: Colors.white)),
-                      ),
-                      const PopupMenuItem(
-                        child: Text("Download music",
-                            style:
-                                TextStyle(fontSize: 16, color: Colors.white)),
-                      ),
-                    ]),
-          )
+              width: _width * 0.95,
+              alignment: Alignment.topRight,
+              child: PopupMenuButton(
+                  icon:
+                      Icon(Icons.adaptive.more, color: Colors.white, size: 20),
+                  color: const Color(0xff211F1D),
+                  itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          child: Text("Download video",
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white)),
+                        ),
+                        const PopupMenuItem(
+                          child: Text("Download music",
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white)),
+                        ),
+                      ]))
         ],
         showVideoProgressIndicator: true,
         bottomActions: [
@@ -101,151 +101,157 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       builder: (context, widget) {
         return Scaffold(
           appBar: buildMyAppBar(),
-          body: Container(
-            color: const Color(0xff141213),
+          body: buildPlayerBody(widget, context),
+        );
+      },
+    );
+  }
+
+  Container buildPlayerBody(Widget widget, BuildContext context) {
+    return Container(
+      color: const Color(0xff141213),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          widget,
+          Divider(
+            height: _height * 0.025,
+          ),
+          Expanded(
+              child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                widget,
+                ExpansionPanelList(
+                  children: [
+                    ExpansionPanel(
+                        backgroundColor: const Color(0xff141213),
+                        canTapOnHeader: true,
+                        headerBuilder: (context, isExpanded) => Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: _width * 0.025,
+                                vertical: _height * 0.0055),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: _width * 0.9,
+                                  child: Text(_fullTitle,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                      ),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      top: _height * 0.01,
+                                      bottom: _height * 0.01),
+                                  child: Text(
+                                    "Published: " +
+                                        _publishedDate +
+                                        ", " +
+                                        _publishedTime,
+                                    style: const TextStyle(
+                                        color: Colors.white54, fontSize: 14),
+                                  ),
+                                )
+                              ],
+                            )),
+                        body: Expanded(
+                            child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Container(
+                            margin: EdgeInsets.all(_width * 0.025),
+                            child: Text(
+                              _description,
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.grey),
+                            ),
+                          ),
+                        )),
+                        isExpanded: isExpanded),
+                  ],
+                  expansionCallback: (int item, bool status) {
+                    setState(() {
+                      isExpanded = !isExpanded;
+                    });
+                  },
+                ),
                 Divider(
                   height: _height * 0.025,
                 ),
-                Expanded(
-                    child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ExpansionPanelList(
-                        children: [
-                          ExpansionPanel(
-                              backgroundColor: const Color(0xff141213),
-                              canTapOnHeader: true,
-                              headerBuilder: (context, isExpanded) => Container(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: _width * 0.025,
-                                      vertical: _height * 0.0055),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: _width * 0.9,
-                                        child: Text(_fullTitle,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                            ),
-                                            maxLines: 3,
-                                            overflow: TextOverflow.ellipsis),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(top: _height * 0.01, bottom: _height * 0.01),
-                                        child: Text(
-                                          "Published At: " +
-                                              _publishedDate +
-                                              ",    " +
-                                              _publishedTime,
-                                          style: const TextStyle(
-                                              color: Colors.white54,
-                                              fontSize: 14),
-                                        ),
-                                      )
-                                    ],
-                                  )),
-                              body: Container(
-                                margin: EdgeInsets.all(_width * 0.025),
-                                child: Text(
-                                  _description,
-                                  style: const TextStyle(
-                                      fontSize: 14, color: Colors.grey),
-                                ),
+                Container(
+                    margin: EdgeInsets.only(
+                        bottom: _height * 0.025, left: _width * 0.02),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              deleteAddFromFavourite();
+                            },
+                            icon: Icon(
+                              !_isFavourite!
+                                  ? Icons.bookmark_border
+                                  : Icons.bookmark,
+                              size: _width * 0.075,
+                              color: Colors.white54,
+                            )),
+                        IconButton(
+                            onPressed: () {
+                              FlutterClipboard.copy(
+                                  "https://www.youtube.com/watch?v=" +
+                                      youtubePlayerController.metadata.videoId);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          "The video link has been copied")));
+                            },
+                            icon: Icon(
+                              Icons.copy,
+                              size: _width * 0.075,
+                              color: Colors.white54,
+                            )),
+                        Container(
+                            alignment: Alignment.bottomCenter,
+                            margin: EdgeInsets.only(top: _height * 0.005),
+                            width: _width * 0.1,
+                            child: GestureDetector(
+                              onTap: () {
+                                downloadVideo(
+                                    "https://www.youtube.com/watch?v=" +
+                                        youtubePlayerController
+                                            .metadata.videoId,
+                                    youtubePlayerController.metadata.title);
+                              },
+                              child: Image.asset(
+                                Consts.imagePath + "VideoDownload.png",
+                                fit: BoxFit.cover,
+                                color: Colors.white54,
                               ),
-                              isExpanded: isExpanded),
-                        ],
-                        expansionCallback: (int item, bool status) {
-                          setState(() {
-                            isExpanded = !isExpanded;
-                          });
-                        },
-                      ),
-                      Divider(
-                        height: _height * 0.025,
-                      ),
-                      Container(
-                          margin: EdgeInsets.only(
-                              bottom: _height * 0.025, left: _width * 0.02),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    deleteAddFromFavourite();
-                                  },
-                                  icon: Icon(
-                                    !_isFavourite!
-                                        ? Icons.bookmark_border
-                                        : Icons.bookmark,
-                                    size: _width * 0.075,
-                                    color: Colors.white54,
-                                  )),
-                              IconButton(
-                                  onPressed: () {
-                                    FlutterClipboard.copy(
-                                        "https://www.youtube.com/watch?v=" +
-                                            youtubePlayerController
-                                                .metadata.videoId);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text(
-                                                "The video link has been copied")));
-                                  },
-                                  icon: Icon(
-                                    Icons.copy,
-                                    size: _width * 0.075,
-                                    color: Colors.white54,
-                                  )),
-                              Container(
-                                  alignment: Alignment.bottomCenter,
-                                  margin: EdgeInsets.only(top: _height * 0.005),
-                                  width: _width * 0.1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      downloadVideo(
-                                          "https://www.youtube.com/watch?v=" +
-                                              youtubePlayerController
-                                                  .metadata.videoId,
-                                          youtubePlayerController
-                                              .metadata.title);
-                                    },
-                                    child: Image.asset(
-                                      Consts.imagePath + "VideoDownload.png",
-                                      fit: BoxFit.cover,
-                                      color: Colors.white54,
-                                    ),
-                                  )),
-                              Container(
-                                  alignment: Alignment.bottomCenter,
-                                  margin: EdgeInsets.only(top: _height * 0.005),
-                                  width: _width * 0.1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      downloadMp3();
-                                    },
-                                    child: Image.asset(
-                                      Consts.imagePath + "MusicDownload.png",
-                                      fit: BoxFit.cover,
-                                      color: Colors.white54,
-                                    ),
-                                  )),
-                            ],
-                          )),
-                    ],
-                  ),
-                ))
+                            )),
+                        Container(
+                            alignment: Alignment.bottomCenter,
+                            margin: EdgeInsets.only(top: _height * 0.005),
+                            width: _width * 0.1,
+                            child: GestureDetector(
+                              onTap: () {
+                                downloadMp3();
+                              },
+                              child: Image.asset(
+                                Consts.imagePath + "MusicDownload.png",
+                                fit: BoxFit.cover,
+                                color: Colors.white54,
+                              ),
+                            )),
+                      ],
+                    )),
               ],
             ),
-          ),
-        );
-      },
+          )),
+        ],
+      ),
     );
   }
 

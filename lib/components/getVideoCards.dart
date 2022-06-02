@@ -227,12 +227,12 @@ class _GetCardState extends State<GetCard> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "Published At:  " + _publishedDate,
+                      "Published: " + _publishedDate,
                       style:
                           const TextStyle(color: Colors.white54, fontSize: 12),
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: width * 0.025),
+                      margin: EdgeInsets.only(left: width * 0.01),
                       child: Text(
                         _publishedTime,
                         style:

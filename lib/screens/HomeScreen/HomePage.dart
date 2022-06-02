@@ -123,6 +123,8 @@ class HomeState extends State<HomePage> {
               lastPickText: "Last county is: " + _code,
             ),
             onChanged: (countryCode) {
+              if (PreferenceService.getLastLocal() != countryCode?.code){
+
               PreferenceService.setLastLocal(countryCode!.code.toString());
               setState(() {
                 _code = countryCode.code.toString();
@@ -176,7 +178,7 @@ class HomeState extends State<HomePage> {
                                 Restart.restartApp();
                               })
                         ],
-                      ))).then((value) {});
+                      ))).then((value) {});}
             },
           ),
           Container(
